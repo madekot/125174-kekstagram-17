@@ -1,6 +1,6 @@
 'use strict';
 
-var QUANTITY_MOCK = 25;
+var MOCK_QUANTITY = 25;
 
 var NAMES = ['Николай', 'Иннокентий', 'Аркадий', 'Руслан', 'Эдуард', 'Ярослав', 'Лев', 'Виталий', 'Андрей', 'Тимофей', 'Павел', 'Сергей', 'Виктор'];
 
@@ -100,4 +100,28 @@ var createMockDescriptionPhotos = function (quantityMock, photoUrl, like, avatar
   return result;
 };
 
-var photos = createMockDescriptionPhotos(QUANTITY_MOCK, URL_NUMBER, LIKE_NUMBER, AVATAR_URL_NUMBER, MESSAGES, NAMES, COMMENT_QUANTITY);
+var photos = createMockDescriptionPhotos(MOCK_QUANTITY, URL_NUMBER, LIKE_NUMBER, AVATAR_URL_NUMBER, MESSAGES, NAMES, COMMENT_QUANTITY);
+var templatePictureElement = document.querySelector('#picture').content.querySelector('.picture');
+var simulationPictureElement = document.querySelector('.pictures');
+
+var createPhotoElement = function (coment) {
+  var photoElement = templatePictureElement.cloneNode(true);
+  var imageElement = photoElement.querySelector('.picture__img');
+  imageElement.src = coment.url;
+  var likeElement = photoElement.querySelector('.picture__likes');
+  likeElement.textContent = coment.likes;
+  var commentElement = photoElement.querySelector('.picture__comments');
+  commentElement.textContent = coment.message.length;
+  return photoElement;
+};
+
+var renderPhotosElements = function (simulationParrentElement, mockArr) {
+  var fragment = document.createDocumentFragment();
+  mockArr.forEach(function (photo) {
+    var photoElement = createPhotoElement(photo);
+    fragment.appendChild(photoElement);
+  });
+  simulationParrentElement.appendChild(fragment);
+};
+
+renderPhotosElements(simulationPictureElement, photos);

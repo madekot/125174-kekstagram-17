@@ -4,10 +4,7 @@ var MOCK_QUANTITY = 25;
 
 var NAMES = ['Николай', 'Иннокентий', 'Аркадий', 'Руслан', 'Эдуард', 'Ярослав', 'Лев', 'Виталий', 'Андрей', 'Тимофей', 'Павел', 'Сергей', 'Виктор'];
 
-var URL_NUMBER = {
-  min: 1,
-  max: 25,
-};
+var URL_PHOTO_MAX_QUANTITY = 25;
 
 var LIKE_NUMBER = {
   min: 15,
@@ -32,6 +29,10 @@ var AVATAR_URL_NUMBER = {
   max: 6,
 };
 
+var getRandomBoolean = function () {
+  return Boolean(getRandomNumber(0, 1));
+};
+
 var getRandomNumber = function (min, max) {
   var result = min - 0.5 + Math.random() * (max - min + 1);
   result = Math.round(result);
@@ -42,9 +43,30 @@ var getRandomArrayValue = function (arr) {
   return arr[getRandomNumber(0, arr.length - 1)];
 };
 
-var getRandomUrl = function (photoUrl) {
-  return 'photos/' + getRandomNumber(photoUrl.min, photoUrl.max) + '.jpg';
+var shuffleRandomArray = function (arr) {
+  return arr.sort(function () {
+    return getRandomBoolean() ? -1 : 1;
+  });
 };
+
+var createPhotosUrl = function (urlMaxQuantity) {
+  var results = [];
+  for (var i = 0; i < urlMaxQuantity; i++) {
+    results[i] = 'photos/' + (i + 1) + '.jpg';
+  }
+  return shuffleRandomArray(results);
+};
+
+var createUrlPhotosСounter = function (urlMaxQuantity) {
+  var counter = 0;
+  var photos = createPhotosUrl(urlMaxQuantity);
+  return function () {
+    counter = counter >= urlMaxQuantity ? 0 : counter;
+    return photos[counter++];
+  };
+};
+
+var getUrlPhoto = createUrlPhotosСounter(URL_PHOTO_MAX_QUANTITY);
 
 var getRandomLike = function (like) {
   return getRandomNumber(like.min, like.max);
@@ -52,10 +74,6 @@ var getRandomLike = function (like) {
 
 var getRandomAvatarUrl = function (avatarUrl) {
   return 'img/avatar-' + getRandomNumber(avatarUrl.min, avatarUrl.max) + '.svg';
-};
-
-var getRandomBoolean = function () {
-  return Boolean(getRandomNumber(0, 1));
 };
 
 var getRandomTextMessage = function (messages) {
@@ -84,23 +102,23 @@ var createMockComments = function (avatarUrl, messages, names, commentQuantity) 
   return result;
 };
 
-var createMockDescriptionPhoto = function (photoUrl, like, avatarUrl, messages, names, commentQuantity) {
+var createMockDescriptionPhoto = function (like, avatarUrl, messages, names, commentQuantity) {
   return {
-    url: getRandomUrl(photoUrl),
+    url: getUrlPhoto(),
     likes: getRandomLike(like),
     message: createMockComments(avatarUrl, messages, names, commentQuantity),
   };
 };
 
-var createMockDescriptionPhotos = function (quantityMock, photoUrl, like, avatarUrl, messages, names, commentQuantity) {
+var createMockDescriptionPhotos = function (quantityMock, like, avatarUrl, messages, names, commentQuantity) {
   var result = [];
   for (var i = 0; i < quantityMock; i++) {
-    result[i] = createMockDescriptionPhoto(photoUrl, like, avatarUrl, messages, names, commentQuantity);
+    result[i] = createMockDescriptionPhoto(like, avatarUrl, messages, names, commentQuantity);
   }
   return result;
 };
 
-var photos = createMockDescriptionPhotos(MOCK_QUANTITY, URL_NUMBER, LIKE_NUMBER, AVATAR_URL_NUMBER, MESSAGES, NAMES, COMMENT_QUANTITY);
+var photos = createMockDescriptionPhotos(MOCK_QUANTITY, LIKE_NUMBER, AVATAR_URL_NUMBER, MESSAGES, NAMES, COMMENT_QUANTITY);
 var templatePictureElement = document.querySelector('#picture').content.querySelector('.picture');
 var simulationPictureElement = document.querySelector('.pictures');
 

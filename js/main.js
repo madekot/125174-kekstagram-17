@@ -6,7 +6,7 @@ var NAMES = ['Николай', 'Иннокентий', 'Аркадий', 'Рус
 
 var URL_PHOTO_MAX_QUANTITY = 25;
 
-var LIKE_NUMBER = {
+var LIKE_RANGE = {
   min: 15,
   max: 200,
 };
@@ -19,7 +19,7 @@ var MESSAGES = [
   'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'];
 
-var COMMENT_QUANTITY = {
+var COMMENT_RANGE = {
   min: 2,
   max: 5,
 };
@@ -48,25 +48,6 @@ var shuffleRandomArray = function (arr) {
     return getRandomBoolean() ? -1 : 1;
   });
 };
-
-var createPhotosUrl = function (urlMaxQuantity) {
-  var results = [];
-  for (var i = 0; i < urlMaxQuantity; i++) {
-    results[i] = 'photos/' + (i + 1) + '.jpg';
-  }
-  return shuffleRandomArray(results);
-};
-
-var createUrlPhotosСounter = function (urlMaxQuantity) {
-  var counter = 0;
-  var photos = createPhotosUrl(urlMaxQuantity);
-  return function () {
-    counter = counter >= urlMaxQuantity ? 0 : counter;
-    return photos[counter++];
-  };
-};
-
-var getUrlPhoto = createUrlPhotosСounter(URL_PHOTO_MAX_QUANTITY);
 
 var getRandomLike = function (like) {
   return getRandomNumber(like.min, like.max);
@@ -102,23 +83,43 @@ var createMockComments = function (avatarUrl, messages, names, commentQuantity) 
   return result;
 };
 
-var createMockDescriptionPhoto = function (like, avatarUrl, messages, names, commentQuantity) {
-  return {
-    url: getUrlPhoto(),
-    likes: getRandomLike(like),
-    message: createMockComments(avatarUrl, messages, names, commentQuantity),
+var createIndexPhotosСounter = function (urlMaxQuantity) {
+  var counter = 0;
+  return function () {
+    counter = counter >= urlMaxQuantity ? 0 : counter;
+    return counter++;
   };
 };
 
-var createMockDescriptionPhotos = function (quantityMock, like, avatarUrl, messages, names, commentQuantity) {
+var createUrlPhotos = function (urlMaxQuantity) {
+  var results = [];
+  for (var i = 0; i < urlMaxQuantity; i++) {
+    results[i] = 'photos/' + (i + 1) + '.jpg';
+  }
+  return results;
+};
+
+var urlPhotos = createUrlPhotos(URL_PHOTO_MAX_QUANTITY);
+urlPhotos = shuffleRandomArray(urlPhotos);
+var getIndexUrlPhoto = createIndexPhotosСounter(URL_PHOTO_MAX_QUANTITY);
+
+var createMockDescriptionPhoto = function (photos, likeRange, avatarUrl, messages, names, commentRange) {
+  return {
+    url: photos[getIndexUrlPhoto()],
+    likes: getRandomLike(likeRange),
+    message: createMockComments(avatarUrl, messages, names, commentRange),
+  };
+};
+
+var createMockDescriptionPhotos = function (quantityMock, photos, likeRange, avatarUrl, messages, names, commentRange) {
   var result = [];
   for (var i = 0; i < quantityMock; i++) {
-    result[i] = createMockDescriptionPhoto(like, avatarUrl, messages, names, commentQuantity);
+    result[i] = createMockDescriptionPhoto(photos, likeRange, avatarUrl, messages, names, commentRange);
   }
   return result;
 };
 
-var photos = createMockDescriptionPhotos(MOCK_QUANTITY, LIKE_NUMBER, AVATAR_URL_NUMBER, MESSAGES, NAMES, COMMENT_QUANTITY);
+var photosElements = createMockDescriptionPhotos(MOCK_QUANTITY, urlPhotos, LIKE_RANGE, AVATAR_URL_NUMBER, MESSAGES, NAMES, COMMENT_RANGE);
 var templatePictureElement = document.querySelector('#picture').content.querySelector('.picture');
 var simulationPictureElement = document.querySelector('.pictures');
 
@@ -142,4 +143,4 @@ var renderPhotosElements = function (simulationParrentElement, mockArr) {
   simulationParrentElement.appendChild(fragment);
 };
 
-renderPhotosElements(simulationPictureElement, photos);
+renderPhotosElements(simulationPictureElement, photosElements);

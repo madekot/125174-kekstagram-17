@@ -24,7 +24,7 @@ var COMMENT_RANGE = {
   max: 5,
 };
 
-var AVATAR_URL_NUMBER = {
+var AVATAR_URL_RANGE = {
   min: 1,
   max: 6,
 };
@@ -53,8 +53,8 @@ var getRandomLike = function (like) {
   return getRandomNumber(like.min, like.max);
 };
 
-var getRandomAvatarUrl = function (avatarUrl) {
-  return 'img/avatar-' + getRandomNumber(avatarUrl.min, avatarUrl.max) + '.svg';
+var getRandomAvatarUrl = function (avatarUrlRange) {
+  return 'img/avatar-' + getRandomNumber(avatarUrlRange.min, avatarUrlRange.max) + '.svg';
 };
 
 var getRandomTextMessage = function (messages) {
@@ -71,11 +71,11 @@ var getRandomName = function (names) {
   return getRandomArrayValue(names);
 };
 
-var createMockComments = function (avatarUrl, messages, names, commentQuantity) {
+var createMockComments = function (avatarUrlRange, messages, names, commentQuantity) {
   var result = [];
   for (var i = 0; i < getRandomQuantityComments(commentQuantity); i++) {
     result[i] = {
-      avatar: getRandomAvatarUrl(avatarUrl),
+      avatar: getRandomAvatarUrl(avatarUrlRange),
       message: getRandomTextMessage(messages),
       name: getRandomName(names),
     };
@@ -103,23 +103,23 @@ var urlPhotos = createUrlPhotos(URL_PHOTO_MAX_QUANTITY);
 urlPhotos = shuffleRandomArray(urlPhotos);
 var getIndexUrlPhoto = createIndexPhotosСounter(URL_PHOTO_MAX_QUANTITY);
 
-var createMockDescriptionPhoto = function (photos, likeRange, avatarUrl, messages, names, commentRange) {
+var createMockDescriptionPhoto = function (photos, likeRange, avatarUrlRange, messages, names, commentRange) {
   return {
     url: photos[getIndexUrlPhoto()],
     likes: getRandomLike(likeRange),
-    message: createMockComments(avatarUrl, messages, names, commentRange),
+    message: createMockComments(avatarUrlRange, messages, names, commentRange),
   };
 };
 
-var createMockDescriptionPhotos = function (quantityMock, photos, likeRange, avatarUrl, messages, names, commentRange) {
+var createMockDescriptionPhotos = function (quantityMock, photos, likeRange, avatarUrlRange, messages, names, commentRange) {
   var result = [];
   for (var i = 0; i < quantityMock; i++) {
-    result[i] = createMockDescriptionPhoto(photos, likeRange, avatarUrl, messages, names, commentRange);
+    result[i] = createMockDescriptionPhoto(photos, likeRange, avatarUrlRange, messages, names, commentRange);
   }
   return result;
 };
 
-var photosElements = createMockDescriptionPhotos(MOCK_QUANTITY, urlPhotos, LIKE_RANGE, AVATAR_URL_NUMBER, MESSAGES, NAMES, COMMENT_RANGE);
+var photosElements = createMockDescriptionPhotos(MOCK_QUANTITY, urlPhotos, LIKE_RANGE, AVATAR_URL_RANGE, MESSAGES, NAMES, COMMENT_RANGE);
 var templatePictureElement = document.querySelector('#picture').content.querySelector('.picture');
 var simulationPictureElement = document.querySelector('.pictures');
 

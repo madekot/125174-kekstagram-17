@@ -43,7 +43,7 @@ var getRandomArrayValue = function (arr) {
   return arr[getRandomNumber(0, arr.length - 1)];
 };
 
-var shuffleRandomArray = function (arr) {
+var shuffleArray = function (arr) {
   return arr.sort(function () {
     return getRandomBoolean() ? -1 : 1;
   });
@@ -63,17 +63,17 @@ var getRandomTextMessage = function (messages) {
   return getRandomBoolean() ? firstOrder : secondOrder;
 };
 
-var getRandomQuantityComments = function (commentQuantity) {
-  return getRandomNumber(commentQuantity.min, commentQuantity.max);
+var getRandomQuantityComments = function (commentRange) {
+  return getRandomNumber(commentRange.min, commentRange.max);
 };
 
 var getRandomName = function (names) {
   return getRandomArrayValue(names);
 };
 
-var createMockComments = function (avatarUrlRange, messages, names, commentQuantity) {
+var createMockComments = function (avatarUrlRange, messages, names, commentRange) {
   var result = [];
-  for (var i = 0; i < getRandomQuantityComments(commentQuantity); i++) {
+  for (var i = 0; i < getRandomQuantityComments(commentRange); i++) {
     result[i] = {
       avatar: getRandomAvatarUrl(avatarUrlRange),
       message: getRandomTextMessage(messages),
@@ -83,24 +83,24 @@ var createMockComments = function (avatarUrlRange, messages, names, commentQuant
   return result;
 };
 
-var createIndexPhotosСounter = function (urlMaxQuantity) {
+var createIndexPhotosСounter = function (urlPhotoMaxQuantity) {
   var counter = 0;
   return function () {
-    counter = counter >= urlMaxQuantity ? 0 : counter;
+    counter = counter >= urlPhotoMaxQuantity ? 0 : counter;
     return counter++;
   };
 };
 
-var createUrlPhotos = function (urlMaxQuantity) {
+var createUrlPhotos = function (urlPhotoMaxQuantity) {
   var results = [];
-  for (var i = 0; i < urlMaxQuantity; i++) {
+  for (var i = 0; i < urlPhotoMaxQuantity; i++) {
     results[i] = 'photos/' + (i + 1) + '.jpg';
   }
   return results;
 };
 
 var urlPhotos = createUrlPhotos(URL_PHOTO_MAX_QUANTITY);
-urlPhotos = shuffleRandomArray(urlPhotos);
+urlPhotos = shuffleArray(urlPhotos);
 var getIndexUrlPhoto = createIndexPhotosСounter(URL_PHOTO_MAX_QUANTITY);
 
 var createMockDescriptionPhoto = function (photos, likeRange, avatarUrlRange, messages, names, commentRange) {
@@ -119,7 +119,7 @@ var createMockDescriptionPhotos = function (quantityMock, photos, likeRange, ava
   return result;
 };
 
-var photosElements = createMockDescriptionPhotos(MOCK_QUANTITY, urlPhotos, LIKE_RANGE, AVATAR_URL_RANGE, MESSAGES, NAMES, COMMENT_RANGE);
+var photoMocks = createMockDescriptionPhotos(MOCK_QUANTITY, urlPhotos, LIKE_RANGE, AVATAR_URL_RANGE, MESSAGES, NAMES, COMMENT_RANGE);
 var templatePictureElement = document.querySelector('#picture').content.querySelector('.picture');
 var simulationPictureElement = document.querySelector('.pictures');
 
@@ -143,4 +143,4 @@ var renderPhotosElements = function (simulationParrentElement, mockArr) {
   simulationParrentElement.appendChild(fragment);
 };
 
-renderPhotosElements(simulationPictureElement, photosElements);
+renderPhotosElements(simulationPictureElement, photoMocks);

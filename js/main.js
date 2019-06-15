@@ -4,12 +4,9 @@ var MOCK_QUANTITY = 25;
 
 var NAMES = ['Николай', 'Иннокентий', 'Аркадий', 'Руслан', 'Эдуард', 'Ярослав', 'Лев', 'Виталий', 'Андрей', 'Тимофей', 'Павел', 'Сергей', 'Виктор'];
 
-var URL_NUMBER = {
-  min: 1,
-  max: 25,
-};
+var URL_PHOTO_MAX_QUANTITY = 25;
 
-var LIKE_NUMBER = {
+var LIKE_RANGE = {
   min: 15,
   max: 200,
 };
@@ -22,14 +19,18 @@ var MESSAGES = [
   'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'];
 
-var COMMENT_QUANTITY = {
+var COMMENT_RANGE = {
   min: 2,
   max: 5,
 };
 
-var AVATAR_URL_NUMBER = {
+var AVATAR_URL_RANGE = {
   min: 1,
   max: 6,
+};
+
+var getRandomBoolean = function () {
+  return Boolean(getRandomNumber(0, 1));
 };
 
 var getRandomNumber = function (min, max) {
@@ -42,20 +43,18 @@ var getRandomArrayValue = function (arr) {
   return arr[getRandomNumber(0, arr.length - 1)];
 };
 
-var getRandomUrl = function (photoUrl) {
-  return 'photos/' + getRandomNumber(photoUrl.min, photoUrl.max) + '.jpg';
+var shuffleArray = function (arr) {
+  return arr.sort(function () {
+    return getRandomBoolean() ? -1 : 1;
+  });
 };
 
 var getRandomLike = function (like) {
   return getRandomNumber(like.min, like.max);
 };
 
-var getRandomAvatarUrl = function (avatarUrl) {
-  return 'img/avatar-' + getRandomNumber(avatarUrl.min, avatarUrl.max) + '.svg';
-};
-
-var getRandomBoolean = function () {
-  return Boolean(getRandomNumber(0, 1));
+var getRandomAvatarUrl = function (avatarUrlRange) {
+  return 'img/avatar-' + getRandomNumber(avatarUrlRange.min, avatarUrlRange.max) + '.svg';
 };
 
 var getRandomTextMessage = function (messages) {
@@ -64,19 +63,19 @@ var getRandomTextMessage = function (messages) {
   return getRandomBoolean() ? firstOrder : secondOrder;
 };
 
-var getRandomQuantityComments = function (commentQuantity) {
-  return getRandomNumber(commentQuantity.min, commentQuantity.max);
+var getRandomQuantityComments = function (commentRange) {
+  return getRandomNumber(commentRange.min, commentRange.max);
 };
 
 var getRandomName = function (names) {
   return getRandomArrayValue(names);
 };
 
-var createMockComments = function (avatarUrl, messages, names, commentQuantity) {
+var createMockComments = function (avatarUrlRange, messages, names, commentRange) {
   var result = [];
-  for (var i = 0; i < getRandomQuantityComments(commentQuantity); i++) {
+  for (var i = 0; i < getRandomQuantityComments(commentRange); i++) {
     result[i] = {
-      avatar: getRandomAvatarUrl(avatarUrl),
+      avatar: getRandomAvatarUrl(avatarUrlRange),
       message: getRandomTextMessage(messages),
       name: getRandomName(names),
     };
@@ -84,23 +83,43 @@ var createMockComments = function (avatarUrl, messages, names, commentQuantity) 
   return result;
 };
 
-var createMockDescriptionPhoto = function (photoUrl, like, avatarUrl, messages, names, commentQuantity) {
-  return {
-    url: getRandomUrl(photoUrl),
-    likes: getRandomLike(like),
-    message: createMockComments(avatarUrl, messages, names, commentQuantity),
+var createIndexPhotosСounter = function (urlPhotoMaxQuantity) {
+  var counter = 0;
+  return function () {
+    counter = counter >= urlPhotoMaxQuantity ? 0 : counter;
+    return counter++;
   };
 };
 
-var createMockDescriptionPhotos = function (quantityMock, photoUrl, like, avatarUrl, messages, names, commentQuantity) {
+var createUrlPhotos = function (urlPhotoMaxQuantity) {
+  var results = [];
+  for (var i = 0; i < urlPhotoMaxQuantity; i++) {
+    results[i] = 'photos/' + (i + 1) + '.jpg';
+  }
+  return results;
+};
+
+var urlPhotos = createUrlPhotos(URL_PHOTO_MAX_QUANTITY);
+urlPhotos = shuffleArray(urlPhotos);
+var getIndexUrlPhoto = createIndexPhotosСounter(URL_PHOTO_MAX_QUANTITY);
+
+var createMockDescriptionPhoto = function (photos, likeRange, avatarUrlRange, messages, names, commentRange) {
+  return {
+    url: photos[getIndexUrlPhoto()],
+    likes: getRandomLike(likeRange),
+    message: createMockComments(avatarUrlRange, messages, names, commentRange),
+  };
+};
+
+var createMockDescriptionPhotos = function (quantityMock, photos, likeRange, avatarUrlRange, messages, names, commentRange) {
   var result = [];
   for (var i = 0; i < quantityMock; i++) {
-    result[i] = createMockDescriptionPhoto(photoUrl, like, avatarUrl, messages, names, commentQuantity);
+    result[i] = createMockDescriptionPhoto(photos, likeRange, avatarUrlRange, messages, names, commentRange);
   }
   return result;
 };
 
-var photos = createMockDescriptionPhotos(MOCK_QUANTITY, URL_NUMBER, LIKE_NUMBER, AVATAR_URL_NUMBER, MESSAGES, NAMES, COMMENT_QUANTITY);
+var photoMocks = createMockDescriptionPhotos(MOCK_QUANTITY, urlPhotos, LIKE_RANGE, AVATAR_URL_RANGE, MESSAGES, NAMES, COMMENT_RANGE);
 var templatePictureElement = document.querySelector('#picture').content.querySelector('.picture');
 var simulationPictureElement = document.querySelector('.pictures');
 
@@ -124,4 +143,4 @@ var renderPhotosElements = function (simulationParrentElement, mockArr) {
   simulationParrentElement.appendChild(fragment);
 };
 
-renderPhotosElements(simulationPictureElement, photos);
+renderPhotosElements(simulationPictureElement, photoMocks);

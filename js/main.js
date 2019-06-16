@@ -159,13 +159,14 @@ var onСloseButtonImageEditingFormClick = function () { // не уверен в 
 
 var openImageEditingForm = function () { // открывает попап редактирования;
   sizeFieldElement.value = DEFAULT_VALUE_SIZE_FIELD + '%'; // Устанавливает значение по умолчанию, для поля размера фото;
-
-  imgUploadOverlayElement.classList.remove('hidden');
+  imgUploadOverlayElement.classList.remove('hidden'); // Показывает попап редактирования;
   closeButtonImageEditingFormElement.addEventListener('click', onСloseButtonImageEditingFormClick);
   document.addEventListener('keydown', onImageEditingFormEscPress);
   increaseButtonElement.addEventListener('click', onIncreaseButtonClick);
   decreaseButtonElement.addEventListener('click', onDecreaseButtonClick);
-  imagePreview.style.transform = 'scale(' + DEFAULT_VALUE_SIZE_FIELD_TRANSFORM + ')'; // сбрасывает размер изображения формы редактирования к дефолтному значению;
+  imagePreview.style.transform = 'scale(' + DEFAULT_VALUE_SIZE_FIELD_TRANSFORM + ')'; // Сбрасывает размер изображения формы редактирования к дефолтному значению;
+  resetPositionPinSlayder(DEFAULT_SLAYDER_POSITION); // Сбрасывает прогресс бар и ручку глубины эфекта, в положение дефолта;
+  effectDepthSlider.classList.add('hidden'); // скрываю слайдер прогресс бара;
 };
 
 var closeImageEditingForm = function () { // закрывает попап редактирования;
@@ -244,9 +245,11 @@ var FILTER_CLASSES = [FILTER_DEFAULT_CLASS, 'effects__preview--chrome', 'effects
 var imagesFilterPreviewElements = formElement.querySelectorAll('.effects__item');
 
 var addClassAddChangeEvent = function (imageFilterPreviewElement, filterClass) {
-  imageFilterPreviewElement.addEventListener('change', function () {
-    resetClassListFilter(imagePreview, FILTER_CLASSES);
-    imagePreview.classList.add(filterClass);
+  imageFilterPreviewElement.addEventListener('click', function () {
+    resetClassListFilter(imagePreview, FILTER_CLASSES); // Удаляет старые классы фильтров с превью картинки;
+    imagePreview.classList.add(filterClass); // Добавляет класс фильтра на превью картинку;
+    resetPositionPinSlayder(DEFAULT_SLAYDER_POSITION); // Сбрасывает прогресс бар и ручку глубины эфекта, в положение дефолта;
+    getSliderVisibilityStatus(filterClass, FILTER_DEFAULT_CLASS); // Cкрывает слайдер изменения эффекта у оригенального;
   });
 };
 
@@ -265,4 +268,36 @@ var resetClassListFilter = function (element, filterClasses) {
 
 addClassAddChangeEvents(imagesFilterPreviewElements, FILTER_CLASSES);
 
-// Меняет интенсивность эффекта через перемещением ползунка в слайдереж;
+// Меняет интенсивность эффекта через перемещением ползунка в слайдере;
+var DEFAULT_SLAYDER_POSITION = 100;
+
+var effectDepthSlider = formElement.querySelector('.img-upload__effect-level'); // слайдер редактирования превью картинки;
+var pinSlayderElement = effectDepthSlider.querySelector('.effect-level__pin');
+var progressPinBarElement = effectDepthSlider.querySelector('.effect-level__depth');
+
+var getSliderVisibilityStatus = function (filterClass, filterDefaultClass) {
+  return filterClass !== filterDefaultClass ? effectDepthSlider.classList.remove('hidden') : effectDepthSlider.classList.add('hidden');
+};
+
+pinSlayderElement.addEventListener('mouseup', function (evtMouse) {
+  evtMouse.preventDefault();
+  setPositionPinSlayder(test(0.5, 1));
+});
+
+var resetPositionPinSlayder = function (position) {
+  pinSlayderElement.style.left = position + '%';
+  progressPinBarElement.style.width = position + '%';
+};
+
+var setPositionPinSlayder = function (position) {
+  pinSlayderElement.style.left = position + '%';
+  progressPinBarElement.style.width = position + '%';
+};
+
+var test = function (unit, filsterMax) {
+  var width = 100;
+  var OneUnitPx = width / filsterMax * unit;
+  return OneUnitPx;
+};
+
+// ну длина блока допустим 200 пикс, а уровень насыщенности 100. значит при пермещении на 50 пикс мы меняем значение на 25

@@ -170,7 +170,7 @@ var openImageEditingForm = function () { // открывает попап ред
 };
 
 var closeImageEditingForm = function () { // закрывает попап редактирования;
-  uploadFileFieldElement.value = ''; // сбрасываю значения поля. для поторной работы события 'change';
+  uploadFileFieldElement.value = ''; // сбрасываю значения поля. для повторной работы события 'change';
   imgUploadOverlayElement.classList.add('hidden');
   closeButtonImageEditingFormElement.removeEventListener('click', onСloseButtonImageEditingFormClick);
   document.removeEventListener('keydown', onImageEditingFormEscPress);
@@ -231,7 +231,7 @@ var onDecreaseButtonClick = function () { // Не уверен в названи
 };
 
 // 1.2.2  Изменение размера фото
-var imagePreview = formElement.querySelector('.img-upload__preview img');
+var imagePreview = formElement.querySelector('.img-upload__preview img'); // Изображение на котором применяются фильтры
 var resizePhotoPreview = function (value) {
   value = value / 100;
   imagePreview.style.transform = 'scale(' + value + ')';
@@ -250,6 +250,7 @@ var addClassAddChangeEvent = function (imageFilterPreviewElement, filterClass) {
     imagePreview.classList.add(filterClass); // Добавляет класс фильтра на превью картинку;
     resetPositionPinSlayder(DEFAULT_SLAYDER_POSITION); // Сбрасывает прогресс бар и ручку глубины эфекта, в положение дефолта;
     getSliderVisibilityStatus(filterClass, FILTER_DEFAULT_CLASS); // Cкрывает слайдер изменения эффекта у оригенального;
+    imagePreview.style.filter = ''; // сбрасываю инлайновые стили фильтров у главной картинки превью;
   });
 };
 
@@ -268,20 +269,22 @@ var resetClassListFilter = function (element, filterClasses) {
 
 addClassAddChangeEvents(imagesFilterPreviewElements, FILTER_CLASSES);
 
-// Меняет интенсивность эффекта через перемещением ползунка в слайдере;
+// 1.3.2 Меняет интенсивность эффекта через перемещением ползунка в слайдере;
 var DEFAULT_SLAYDER_POSITION = 100;
 
-var effectDepthSlider = formElement.querySelector('.img-upload__effect-level'); // слайдер редактирования превью картинки;
+var effectDepthSlider = formElement.querySelector('.img-upload__effect-level');
 var pinSlayderElement = effectDepthSlider.querySelector('.effect-level__pin');
 var progressPinBarElement = effectDepthSlider.querySelector('.effect-level__depth');
+var effectLevelValue = effectDepthSlider.querySelector('.effect-level__value'); // поле значения эфекта слайдера
 
 var getSliderVisibilityStatus = function (filterClass, filterDefaultClass) {
   return filterClass !== filterDefaultClass ? effectDepthSlider.classList.remove('hidden') : effectDepthSlider.classList.add('hidden');
 };
 
-pinSlayderElement.addEventListener('mouseup', function (evtMouse) {
-  evtMouse.preventDefault();
-  setPositionPinSlayder(test(0.5, 1));
+pinSlayderElement.addEventListener('mouseup', function () {
+  var effectValue = effectLevelValue.value;
+  effectValue = getPositionPinSlayderPercent();
+  imagePreview.style.filter = convertClassToFilterStyle(effectValue);// накладываает фильтр
 });
 
 var resetPositionPinSlayder = function (position) {
@@ -289,15 +292,35 @@ var resetPositionPinSlayder = function (position) {
   progressPinBarElement.style.width = position + '%';
 };
 
-var setPositionPinSlayder = function (position) {
-  pinSlayderElement.style.left = position + '%';
-  progressPinBarElement.style.width = position + '%';
+var convertPercentToFilterValue = function (unit, filsterMaxValue) {
+  return filsterMaxValue / 100 * unit;
 };
 
-var test = function (unit, filsterMax) {
-  var width = 100;
-  var OneUnitPx = width / filsterMax * unit;
-  return OneUnitPx;
+var getPositionPinSlayderPercent = function () {
+  var positionLeftWidthPin = pinSlayderElement.offsetLeft;
+  var parentWidth = pinSlayderElement.offsetParent.offsetWidth;
+
+  var onePercent = parentWidth / 100;
+  var percentPinWidth = positionLeftWidthPin / onePercent;
+  return Math.round(percentPinWidth);
 };
 
-// ну длина блока допустим 200 пикс, а уровень насыщенности 100. значит при пермещении на 50 пикс мы меняем значение на 25
+var FILTER_NAMES = ['grayscale', 'sepia', 'invert', 'blur', 'brightness'];
+var FILTER_MAX_VALUE = [1, 1, 100, 3, 3];
+
+var convertClassToFilterStyle = function (effectValue) {
+  var result = '';
+  switch (imagePreview.className) {
+    case FILTER_CLASSES[1]: result = FILTER_NAMES[0] + '(' + convertPercentToFilterValue(effectValue, FILTER_MAX_VALUE[0]) + ')';
+      break;
+    case FILTER_CLASSES[2]: result = FILTER_NAMES[1] + '(' + convertPercentToFilterValue(effectValue, FILTER_MAX_VALUE[1]) + ')';
+      break;
+    case FILTER_CLASSES[3]: result = FILTER_NAMES[2] + '(' + convertPercentToFilterValue(effectValue, FILTER_MAX_VALUE[2]) + '%' + ')';
+      break;
+    case FILTER_CLASSES[4]: result = FILTER_NAMES[3] + '(' + convertPercentToFilterValue(effectValue, FILTER_MAX_VALUE[3]) + 'px' + ')';
+      break;
+    case FILTER_CLASSES[5]: result = FILTER_NAMES[4] + '(' + convertPercentToFilterValue(effectValue, FILTER_MAX_VALUE[4]) + ')';
+      break;
+  }
+  return result;
+};

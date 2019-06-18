@@ -29,6 +29,24 @@ var AVATAR_URL_RANGE = {
   max: 6,
 };
 
+var KEY_CODE_ESC = 27;
+
+var DEFAULT_VALUE_SIZE_FIELD = 100;
+var DEFAULT_VALUE_SIZE_FIELD_TRANSFORM = 1;
+
+var RESIZING_STEP = 25;
+var MIN_SIZE = 25;
+var MAX_SIZE = 100;
+var NUMBER_SYSTEM = 10;
+
+var DEFAULT_SLAYDER_POSITION = 100;
+
+var FILTER_DEFAULT_CLASS = 'effects__preview--original';
+var FILTER_CLASSES = [FILTER_DEFAULT_CLASS, 'effects__preview--chrome', 'effects__preview--sepia', 'effects__preview--marvin', 'effects__preview--phobos', 'effects__preview--heat'];
+
+var FILTER_NAMES = ['grayscale', 'sepia', 'invert', 'blur', 'brightness'];
+var FILTER_MAX_VALUE = [1, 1, 100, 3, 3];
+
 var getRandomBoolean = function () {
   return Boolean(getRandomNumber(0, 1));
 };
@@ -45,7 +63,9 @@ var getRandomArrayValue = function (arr) {
 
 var shuffleArray = function (arr) {
   return arr.sort(function () {
-    return getRandomBoolean() ? -1 : 1;
+    return getRandomBoolean()
+      ? -1
+      : 1;
   });
 };
 
@@ -60,7 +80,9 @@ var getRandomAvatarUrl = function (avatarUrlRange) {
 var getRandomTextMessage = function (messages) {
   var firstOrder = getRandomArrayValue(messages) + ' ' + getRandomArrayValue(messages);
   var secondOrder = getRandomArrayValue(messages);
-  return getRandomBoolean() ? firstOrder : secondOrder;
+  return getRandomBoolean()
+    ? firstOrder
+    : secondOrder;
 };
 
 var getRandomQuantityComments = function (commentRange) {
@@ -86,7 +108,9 @@ var createMockComments = function (avatarUrlRange, messages, names, commentRange
 var createIndexPhotosСounter = function (urlPhotoMaxQuantity) {
   var counter = 0;
   return function () {
-    counter = counter >= urlPhotoMaxQuantity ? 0 : counter;
+    counter = counter >= urlPhotoMaxQuantity
+      ? 0
+      : counter;
     return counter++;
   };
 };
@@ -147,63 +171,10 @@ renderPhotosElements(simulationPictureElement, photoMocks);
 
 // Решение задания: подробности;
 
-// 1.1 Открытие закрытие формы редактирования;
-var formElement = document.querySelector('.img-upload'); // форма редактирования фото
-var uploadFileFieldElement = formElement.querySelector('#upload-file');
-var imgUploadOverlayElement = formElement.querySelector('.img-upload__overlay');
-var closeButtonImageEditingFormElement = formElement.querySelector('#upload-cancel');
+var imageEditingFormElement = document.querySelector('.img-upload'); // форма редактирования фото
+var effectDepthSliderElement = imageEditingFormElement.querySelector('.img-upload__effect-level');
 
-var onСloseButtonImageEditingFormClick = function () { // не уверен в названии;
-  closeImageEditingForm();
-};
-
-var openImageEditingForm = function () { // открывает попап редактирования;
-  sizeFieldElement.value = DEFAULT_VALUE_SIZE_FIELD + '%'; // Устанавливает значение по умолчанию, для поля размера фото;
-  imgUploadOverlayElement.classList.remove('hidden'); // Показывает попап редактирования;
-  closeButtonImageEditingFormElement.addEventListener('click', onСloseButtonImageEditingFormClick);
-  document.addEventListener('keydown', onImageEditingFormEscPress);
-  increaseButtonElement.addEventListener('click', onIncreaseButtonClick);
-  decreaseButtonElement.addEventListener('click', onDecreaseButtonClick);
-  imagePreview.style.transform = 'scale(' + DEFAULT_VALUE_SIZE_FIELD_TRANSFORM + ')'; // Сбрасывает размер изображения формы редактирования к дефолтному значению;
-  resetPositionPinSlayder(DEFAULT_SLAYDER_POSITION); // Сбрасывает прогресс бар и ручку глубины эфекта, в положение дефолта;
-  effectDepthSlider.classList.add('hidden'); // скрываю слайдер прогресс бара;
-};
-
-var closeImageEditingForm = function () { // закрывает попап редактирования;
-  uploadFileFieldElement.value = ''; // сбрасываю значения поля. для повторной работы события 'change';
-  imgUploadOverlayElement.classList.add('hidden');
-  closeButtonImageEditingFormElement.removeEventListener('click', onСloseButtonImageEditingFormClick);
-  document.removeEventListener('keydown', onImageEditingFormEscPress);
-  increaseButtonElement.removeEventListener('click', onIncreaseButtonClick);
-  decreaseButtonElement.removeEventListener('click', onDecreaseButtonClick);
-};
-
-uploadFileFieldElement.addEventListener('change', function () { // вешает обработчик на поле загрузки фото и слушает событие change;
-  openImageEditingForm();
-});
-
-var KEY_CODE_ESC = 27;
-var onImageEditingFormEscPress = function (evt) { // не уверен в названии;
-  if (evt.keyCode === KEY_CODE_ESC) {
-    closeImageEditingForm();
-  }
-};
-
-// 1.2 Редактирование размера изображения;
-
-// 1.2.1 Изменение поля размера фото
-var DEFAULT_VALUE_SIZE_FIELD = 100;
-var DEFAULT_VALUE_SIZE_FIELD_TRANSFORM = 1;
-
-var RESIZING_STEP = 25;
-var MIN_SIZE = 25;
-var MAX_SIZE = 100;
-var NUMBER_SYSTEM = 10;
-
-var sizeFieldElement = formElement.querySelector('.scale__control--value'); // поле размера фото;
-var increaseButtonElement = formElement.querySelector('.scale__control--bigger');
-var decreaseButtonElement = formElement.querySelector('.scale__control--smaller');
-
+var sizeFieldElement = imageEditingFormElement.querySelector('.scale__control--value'); // поле размера фото;
 var increaseFieldValue = function () { // Увеличивает значения поля размера фото
   var sizeFieldElementvalue = parseInt(sizeFieldElement.value, NUMBER_SYSTEM); // вытаскивает число из строки значения поля;
   if (sizeFieldElementvalue < MAX_SIZE) {
@@ -211,6 +182,16 @@ var increaseFieldValue = function () { // Увеличивает значени�
     sizeFieldElement.value = sizeFieldElementvalue + '%';
   }
   return sizeFieldElementvalue;
+};
+
+var imagePreviewElement = imageEditingFormElement.querySelector('.img-upload__preview img'); // Изображение на котором применяются фильтры
+var resizePhotoPreview = function (value) {
+  value = value / 100;
+  imagePreviewElement.style.transform = 'scale(' + value + ')';
+};
+
+var onImageIncreaseButtonClick = function () { // увеличивает значения поля размера; // После модульности ПОМЕНЯТЬ НАЗВАНИЕ
+  resizePhotoPreview(increaseFieldValue());
 };
 
 var decreaseFieldValue = function () { // Уменьшает значения поля размера фото
@@ -222,95 +203,76 @@ var decreaseFieldValue = function () { // Уменьшает значения п
   return sizeFieldElementvalue;
 };
 
-var onIncreaseButtonClick = function () { // Не уверен в названии, функция обработчика увеличения значения поля размера;
-  resizePhotoPreview(increaseFieldValue());
-};
-
-var onDecreaseButtonClick = function () { // Не уверен в названии, функция обработчика уменьшения значения поля размера;
+var onImageDecreaseButtonClick = function () { // уменьшает значения поля размера; // После модульности ПОМЕНЯТЬ НАЗВАНИЕ
   resizePhotoPreview(decreaseFieldValue());
 };
 
-// 1.2.2  Изменение размера фото
-var imagePreview = formElement.querySelector('.img-upload__preview img'); // Изображение на котором применяются фильтры
-var resizePhotoPreview = function (value) {
-  value = value / 100;
-  imagePreview.style.transform = 'scale(' + value + ')';
+var pinSliderElement = effectDepthSliderElement.querySelector('.effect-level__pin');
+var progressBarSliderElement = effectDepthSliderElement.querySelector('.effect-level__depth');
+
+var imgUploadOverlayElement = imageEditingFormElement.querySelector('.img-upload__overlay');
+var closeButtonImageEditingFormElement = imageEditingFormElement.querySelector('#upload-cancel');
+
+var onImageEditingFormEsckey = function (evt) {
+  if (evt.keyCode === KEY_CODE_ESC) {
+    closeImageEditingForm();
+  }
 };
 
-// 1.3 Наложение эффекта на изображение:
+var increaseButtonElement = imageEditingFormElement.querySelector('.scale__control--bigger');
+var decreaseButtonElement = imageEditingFormElement.querySelector('.scale__control--smaller');
 
-// 1.3.1 Добавляет класс изображению формы редактирования, через клик по превью картинке;
-var FILTER_DEFAULT_CLASS = 'effects__preview--original';
-var FILTER_CLASSES = [FILTER_DEFAULT_CLASS, 'effects__preview--chrome', 'effects__preview--sepia', 'effects__preview--marvin', 'effects__preview--phobos', 'effects__preview--heat'];
-var imagesFilterPreviewElements = formElement.querySelectorAll('.effects__item');
-
-var addClassAddChangeEvent = function (imageFilterPreviewElement, filterClass) {
-  imageFilterPreviewElement.addEventListener('click', function () {
-    resetClassListFilter(imagePreview, FILTER_CLASSES); // Удаляет старые классы фильтров с превью картинки;
-    imagePreview.classList.add(filterClass); // Добавляет класс фильтра на превью картинку;
-    resetPositionPinSlayder(DEFAULT_SLAYDER_POSITION); // Сбрасывает прогресс бар и ручку глубины эфекта, в положение дефолта;
-    getSliderVisibilityStatus(filterClass, FILTER_DEFAULT_CLASS); // Cкрывает слайдер изменения эффекта у оригенального;
-    imagePreview.style.filter = ''; // сбрасываю инлайновые стили фильтров у главной картинки превью;
-  });
+var resetPositionSlider = function (position) {
+  pinSliderElement.style.left = position + '%';
+  progressBarSliderElement.style.width = position + '%';
 };
 
-var addClassAddChangeEvents = function (imagesPreviewFilters, filterClasses) {
-  imagesFilterPreviewElements.forEach(function (imagePreviewfilter, i) {
-    var filterClass = filterClasses[i];
-    addClassAddChangeEvent(imagePreviewfilter, filterClass);
-  });
+var openImageEditingForm = function () { // открывает попап редактирования;
+  sizeFieldElement.value = DEFAULT_VALUE_SIZE_FIELD + '%'; // Устанавливает значение по умолчанию, для поля размера фото;
+  imgUploadOverlayElement.classList.remove('hidden'); // Показывает попап редактирования;
+  closeButtonImageEditingFormElement.addEventListener('click', onСloseButtonImageEditingFormClick);
+  document.addEventListener('keydown', onImageEditingFormEsckey);
+  increaseButtonElement.addEventListener('click', onImageIncreaseButtonClick); // После модульности ПОМЕНЯТЬ НАЗВАНИЕ
+  decreaseButtonElement.addEventListener('click', onImageDecreaseButtonClick); // После модульности ПОМЕНЯТЬ НАЗВАНИЕ
+  imagePreviewElement.style.transform = 'scale(' + DEFAULT_VALUE_SIZE_FIELD_TRANSFORM + ')'; // Сбрасывает размер изображения формы редактирования к дефолтному значению;
+  resetPositionSlider(DEFAULT_SLAYDER_POSITION); // Сбрасывает прогресс бар и ручку глубины эфекта, в положение дефолта;
+  effectDepthSliderElement.classList.add('hidden'); // скрываю слайдер прогресс бара;
 };
 
-var resetClassListFilter = function (element, filterClasses) {
-  filterClasses.forEach(function (nameClass) {
-    element.classList.remove(nameClass);
-  });
-};
-
-addClassAddChangeEvents(imagesFilterPreviewElements, FILTER_CLASSES);
-
-// 1.3.2 Меняет интенсивность эффекта через перемещением ползунка в слайдере;
-var DEFAULT_SLAYDER_POSITION = 100;
-
-var effectDepthSlider = formElement.querySelector('.img-upload__effect-level');
-var pinSlayderElement = effectDepthSlider.querySelector('.effect-level__pin');
-var progressPinBarElement = effectDepthSlider.querySelector('.effect-level__depth');
-var effectLevelValue = effectDepthSlider.querySelector('.effect-level__value'); // поле значения эфекта слайдера
-
-var getSliderVisibilityStatus = function (filterClass, filterDefaultClass) {
-  return filterClass !== filterDefaultClass ? effectDepthSlider.classList.remove('hidden') : effectDepthSlider.classList.add('hidden');
-};
-
-pinSlayderElement.addEventListener('mouseup', function () {
-  var effectValue = effectLevelValue.value;
-  effectValue = getPositionPinSlayderPercent();
-  imagePreview.style.filter = convertClassToFilterStyle(effectValue);// накладываает фильтр
+var uploadFileFieldElement = imageEditingFormElement.querySelector('#upload-file');
+uploadFileFieldElement.addEventListener('change', function () { // вешает обработчик на поле загрузки фото и слушает событие change;
+  openImageEditingForm();
 });
 
-var resetPositionPinSlayder = function (position) {
-  pinSlayderElement.style.left = position + '%';
-  progressPinBarElement.style.width = position + '%';
+var closeImageEditingForm = function () { // закрывает попап редактирования;
+  uploadFileFieldElement.value = ''; // сбрасываю значения поля. для повторной работы события 'change';
+  imgUploadOverlayElement.classList.add('hidden');
+  closeButtonImageEditingFormElement.removeEventListener('click', onСloseButtonImageEditingFormClick);
+  document.removeEventListener('keydown', onImageEditingFormEsckey);
+  increaseButtonElement.removeEventListener('click', onImageIncreaseButtonClick); // После модульности ПОМЕНЯТЬ НАЗВАНИЕ
+  decreaseButtonElement.removeEventListener('click', onImageDecreaseButtonClick); // После модульности ПОМЕНЯТЬ НАЗВАНИЕ
 };
 
-var convertPercentToFilterValue = function (unit, filsterMaxValue) {
-  return filsterMaxValue / 100 * unit;
+var onСloseButtonImageEditingFormClick = function () { // Когда разобью на модули нужно ПОМЕНЯТЬ НАЗВАНИЕ.
+  closeImageEditingForm();
 };
 
-var getPositionPinSlayderPercent = function () {
-  var positionLeftWidthPin = pinSlayderElement.offsetLeft;
-  var parentWidth = pinSlayderElement.offsetParent.offsetWidth;
+var getPositionPinSliderPercent = function () {
+  var positionLeftWidthPin = pinSliderElement.offsetLeft;
+  var parentWidth = pinSliderElement.offsetParent.offsetWidth;
 
   var onePercent = parentWidth / 100;
   var percentPinWidth = positionLeftWidthPin / onePercent;
   return Math.round(percentPinWidth);
 };
 
-var FILTER_NAMES = ['grayscale', 'sepia', 'invert', 'blur', 'brightness'];
-var FILTER_MAX_VALUE = [1, 1, 100, 3, 3];
+var convertPercentToFilterValue = function (unit, filsterMaxValue) {
+  return filsterMaxValue / 100 * unit;
+};
 
 var convertClassToFilterStyle = function (effectValue) {
   var result = '';
-  switch (imagePreview.className) {
+  switch (imagePreviewElement.className) {
     case FILTER_CLASSES[1]: result = FILTER_NAMES[0] + '(' + convertPercentToFilterValue(effectValue, FILTER_MAX_VALUE[0]) + ')';
       break;
     case FILTER_CLASSES[2]: result = FILTER_NAMES[1] + '(' + convertPercentToFilterValue(effectValue, FILTER_MAX_VALUE[1]) + ')';
@@ -324,3 +286,43 @@ var convertClassToFilterStyle = function (effectValue) {
   }
   return result;
 };
+
+var effectLevelValueElement = effectDepthSliderElement.querySelector('.effect-level__value'); // поле значения эфекта слайдера
+
+pinSliderElement.addEventListener('mouseup', function () {
+  var effectValue = effectLevelValueElement.value;
+  effectValue = getPositionPinSliderPercent();
+  imagePreviewElement.style.filter = convertClassToFilterStyle(effectValue);// накладываает фильтр
+});
+
+var resetClassListFilter = function (element, filterClasses) {
+  filterClasses.forEach(function (nameClass) {
+    element.classList.remove(nameClass);
+  });
+};
+
+var hideOrShowSlider = function (filterClass, filterDefaultClass) {
+  return filterClass !== filterDefaultClass
+    ? effectDepthSliderElement.classList.remove('hidden')
+    : effectDepthSliderElement.classList.add('hidden');
+};
+
+var addClassAddChangeEvent = function (imageFilterPreviewElement, filterClass) {
+  imageFilterPreviewElement.addEventListener('click', function () {
+    resetClassListFilter(imagePreviewElement, FILTER_CLASSES); // Удаляет старые классы фильтров с превью картинки;
+    imagePreviewElement.classList.add(filterClass); // Добавляет класс фильтра на превью картинку;
+    resetPositionSlider(DEFAULT_SLAYDER_POSITION); // Сбрасывает прогресс бар и ручку глубины эфекта, в положение дефолта;
+    hideOrShowSlider(filterClass, FILTER_DEFAULT_CLASS); // Cкрывает или показывает слайдер изменения эффекта;
+    imagePreviewElement.style.filter = ''; // сбрасываю инлайновые стили фильтров у главной картинки превью;
+  });
+};
+
+var imagesFilterPreviewElements = imageEditingFormElement.querySelectorAll('.effects__item');
+var addClassAddChangeEvents = function (imagesPreviewFilters, filterClasses) {
+  imagesFilterPreviewElements.forEach(function (imagePreviewfilter, i) {
+    var filterClass = filterClasses[i];
+    addClassAddChangeEvent(imagePreviewfilter, filterClass);
+  });
+};
+
+addClassAddChangeEvents(imagesFilterPreviewElements, FILTER_CLASSES);

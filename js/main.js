@@ -213,8 +213,10 @@ var progressBarSliderElement = effectDepthSliderElement.querySelector('.effect-l
 var imgUploadOverlayElement = imageEditingFormElement.querySelector('.img-upload__overlay');
 var closeButtonImageEditingFormElement = imageEditingFormElement.querySelector('#upload-cancel');
 
+var commentFormEditingElement = imageEditingFormElement.querySelector('.text__description');
 var onImageEditingFormEsckey = function (evt) {
-  if (evt.keyCode === KEY_CODE_ESC) {
+  var isCommentsfield = evt.target !== commentFormEditingElement; // Возвращает false если target это форма коментариев, иначе true;
+  if (evt.keyCode === KEY_CODE_ESC && isCommentsfield) {
     closeImageEditingForm();
   }
 };

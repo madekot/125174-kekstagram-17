@@ -1,16 +1,26 @@
 'use strict';
 
-var MOCK_QUANTITY = 25;
-
-var NAMES = ['Николай', 'Иннокентий', 'Аркадий', 'Руслан', 'Эдуард', 'Ярослав', 'Лев', 'Виталий', 'Андрей', 'Тимофей', 'Павел', 'Сергей', 'Виктор'];
-
-var URL_PHOTO_MAX_QUANTITY = 25;
-
-var LIKE_RANGE = {
-  min: 15,
-  max: 200,
+var AVATAR_URL_RANGE = {
+  max: 6,
+  min: 1,
 };
-
+var COMMENT_RANGE = {
+  max: 5,
+  min: 2,
+};
+var DEFAULT_SLAYDER_POSITION = 100;
+var DEFAULT_VALUE_SIZE_FIELD = 100;
+var DEFAULT_VALUE_SIZE_FIELD_TRANSFORM = 1;
+var FILTER_CLASSES = [FILTER_DEFAULT_CLASS, 'effects__preview--chrome', 'effects__preview--sepia', 'effects__preview--marvin', 'effects__preview--phobos', 'effects__preview--heat'];
+var FILTER_DEFAULT_CLASS = 'effects__preview--original';
+var FILTER_MAX_VALUE = [1, 1, 100, 3, 3];
+var FILTER_NAMES = ['grayscale', 'sepia', 'invert', 'blur', 'brightness'];
+var KEY_CODE_ESC = 27;
+var LIKE_RANGE = {
+  max: 200,
+  min: 15,
+};
+var MAX_SIZE = 100;
 var MESSAGES = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
@@ -18,34 +28,12 @@ var MESSAGES = [
   'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
   'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'];
-
-var COMMENT_RANGE = {
-  min: 2,
-  max: 5,
-};
-
-var AVATAR_URL_RANGE = {
-  min: 1,
-  max: 6,
-};
-
-var KEY_CODE_ESC = 27;
-
-var DEFAULT_VALUE_SIZE_FIELD = 100;
-var DEFAULT_VALUE_SIZE_FIELD_TRANSFORM = 1;
-
-var RESIZING_STEP = 25;
 var MIN_SIZE = 25;
-var MAX_SIZE = 100;
+var MOCK_QUANTITY = 25;
+var NAMES = ['Николай', 'Иннокентий', 'Аркадий', 'Руслан', 'Эдуард', 'Ярослав', 'Лев', 'Виталий', 'Андрей', 'Тимофей', 'Павел', 'Сергей', 'Виктор'];
 var NUMBER_SYSTEM = 10;
-
-var DEFAULT_SLAYDER_POSITION = 100;
-
-var FILTER_DEFAULT_CLASS = 'effects__preview--original';
-var FILTER_CLASSES = [FILTER_DEFAULT_CLASS, 'effects__preview--chrome', 'effects__preview--sepia', 'effects__preview--marvin', 'effects__preview--phobos', 'effects__preview--heat'];
-
-var FILTER_NAMES = ['grayscale', 'sepia', 'invert', 'blur', 'brightness'];
-var FILTER_MAX_VALUE = [1, 1, 100, 3, 3];
+var RESIZING_STEP = 25;
+var URL_PHOTO_MAX_QUANTITY = 25;
 
 var getRandomBoolean = function () {
   return Boolean(getRandomNumber(0, 1));
@@ -190,7 +178,7 @@ var resizePhotoPreview = function (value) {
   imagePreviewElement.style.transform = 'scale(' + value + ')';
 };
 
-var onImageIncreaseButtonClick = function () { // увеличивает значения поля размера; // После модульности ПОМЕНЯТЬ НАЗВАНИЕ
+var onImageIncreaseButtonClick = function () { // увеличивает значения поля размера; // TODO: После модульности ПОМЕНЯТЬ НАЗВАНИЕ
   resizePhotoPreview(increaseFieldValue());
 };
 
@@ -203,7 +191,7 @@ var decreaseFieldValue = function () { // Уменьшает значения п
   return sizeFieldElementvalue;
 };
 
-var onImageDecreaseButtonClick = function () { // уменьшает значения поля размера; // После модульности ПОМЕНЯТЬ НАЗВАНИЕ
+var onImageDecreaseButtonClick = function () { // уменьшает значения поля размера; // TODO: После модульности ПОМЕНЯТЬ НАЗВАНИЕ
   resizePhotoPreview(decreaseFieldValue());
 };
 
@@ -234,8 +222,8 @@ var openImageEditingForm = function () { // открывает попап ред
   imgUploadOverlayElement.classList.remove('hidden'); // Показывает попап редактирования;
   closeButtonImageEditingFormElement.addEventListener('click', onСloseButtonImageEditingFormClick);
   document.addEventListener('keydown', onImageEditingFormEsckey);
-  increaseButtonElement.addEventListener('click', onImageIncreaseButtonClick); // После модульности ПОМЕНЯТЬ НАЗВАНИЕ
-  decreaseButtonElement.addEventListener('click', onImageDecreaseButtonClick); // После модульности ПОМЕНЯТЬ НАЗВАНИЕ
+  increaseButtonElement.addEventListener('click', onImageIncreaseButtonClick); // TODO: После модульности ПОМЕНЯТЬ НАЗВАНИЕ
+  decreaseButtonElement.addEventListener('click', onImageDecreaseButtonClick); // TODO: После модульности ПОМЕНЯТЬ НАЗВАНИЕ
   imagePreviewElement.style.transform = 'scale(' + DEFAULT_VALUE_SIZE_FIELD_TRANSFORM + ')'; // Сбрасывает размер изображения формы редактирования к дефолтному значению;
   resetPositionSlider(DEFAULT_SLAYDER_POSITION); // Сбрасывает прогресс бар и ручку глубины эфекта, в положение дефолта;
   effectDepthSliderElement.classList.add('hidden'); // скрываю слайдер прогресс бара;

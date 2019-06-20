@@ -325,6 +325,7 @@ pinSliderElement.addEventListener('mousedown', function (mouseDownEvt) {
   var startingCoordinatesMouseX = mouseDownEvt.clientX;
 
   var onPinMouseMove = function (mouseMoveEvt) {
+    mouseMoveEvt.preventDefault();
     var shiftCoordinatesMouse = startingCoordinatesMouseX - mouseMoveEvt.clientX;
     startingCoordinatesMouseX = mouseMoveEvt.clientX;
     var offsetParentWidth = pinSliderElement.offsetParent.clientWidth;
@@ -334,7 +335,8 @@ pinSliderElement.addEventListener('mousedown', function (mouseDownEvt) {
     effectValue = getPositionPinSliderPercent();
     imagePreviewElement.style.filter = convertClassToFilterStyle(effectValue);// накладываает фильтр
 
-    pinSliderElement.style.left = (pinSliderElement.offsetLeft - shiftCoordinatesMouse) + 'px';
+    var centerPinPercent = (pinSliderElement.clientWidth / 2) / 100;
+    pinSliderElement.style.left = ((pinSliderElement.offsetLeft - shiftCoordinatesMouse) - centerPinPercent) + 'px';
     if (pinPositionNumber < 0) {
       pinSliderElement.style.left = 0;
     }

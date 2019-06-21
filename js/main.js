@@ -316,3 +316,42 @@ var addClassAddChangeEvents = function (imagesPreviewFilters, filterClasses) {
 };
 
 addClassAddChangeEvents(imagesFilterPreviewElements, FILTER_CLASSES);
+
+// Максимум подвижности;
+
+
+pinSliderElement.addEventListener('mousedown', function (mouseDownEvt) {
+  mouseDownEvt.preventDefault();
+  var startingCoordinatesMouseX = mouseDownEvt.clientX;
+
+  var onPinMouseMove = function (mouseMoveEvt) {
+    mouseMoveEvt.preventDefault();
+    var shiftCoordinatesMouse = startingCoordinatesMouseX - mouseMoveEvt.clientX;
+    startingCoordinatesMouseX = mouseMoveEvt.clientX;
+    var offsetParentWidth = pinSliderElement.offsetParent.clientWidth;
+    var pinPositionNumber = parseInt(pinSliderElement.style.left, NUMBER_SYSTEM);
+
+    var effectValue = effectLevelValueElement.value;
+    effectValue = getPositionPinSliderPercent();
+    imagePreviewElement.style.filter = convertClassToFilterStyle(effectValue);// накладываает фильтр
+
+    var centerPinPercent = (pinSliderElement.clientWidth / 2) / 100;
+    pinSliderElement.style.left = ((pinSliderElement.offsetLeft - shiftCoordinatesMouse) - centerPinPercent) + 'px';
+    if (pinPositionNumber < 0) {
+      pinSliderElement.style.left = 0;
+    }
+    if (pinPositionNumber > offsetParentWidth) {
+      pinSliderElement.style.left = offsetParentWidth + 'px';
+    }
+  };
+  document.addEventListener('mousemove', onPinMouseMove);
+
+  var onSetupElementMouseUp = function (mouseUpEvt) {
+    mouseUpEvt.preventDefault();
+    document.removeEventListener('mousemove', onPinMouseMove);
+    document.removeEventListener('mouseup', onSetupElementMouseUp);
+  };
+
+  document.addEventListener('mouseup', onSetupElementMouseUp);
+
+});

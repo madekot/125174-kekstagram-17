@@ -23,7 +23,7 @@
   };
 
   var progressBarSliderElement = effectDepthSliderElement.querySelector('.effect-level__depth');
-  var resetPositionSlider = function (position) {
+  var resetPosition = function (position) {
     position = position || DEFAULT_SLAYDER_POSITION;
     pinSliderElement.style.left = position + '%';
     progressBarSliderElement.style.width = position + '%';
@@ -108,7 +108,7 @@
     imageFilterPreviewElement.addEventListener('click', function () {
       resetClassListFilter(imagePreviewElement, FILTER_CLASSES); // Удаляет старые классы фильтров с превью картинки;
       imagePreviewElement.classList.add(filterClass); // Добавляет класс фильтра на превью картинку;
-      resetPositionSlider(DEFAULT_SLAYDER_POSITION); // Сбрасывает прогресс бар и ручку глубины эфекта, в положение дефолта;
+      resetPosition(DEFAULT_SLAYDER_POSITION); // Сбрасывает прогресс бар и ручку глубины эфекта, в положение дефолта;
       hideOrShowSlider(filterClass, FILTER_DEFAULT_CLASS); // Cкрывает или показывает слайдер изменения эффекта;
       imagePreviewElement.style.filter = ''; // сбрасываю инлайновые стили фильтров у главной картинки превью;
     });
@@ -125,7 +125,7 @@
   addClassAddChangeEvents(imagesFilterPreviewElements, FILTER_CLASSES);
 
   window.slider = {
-    resetPositionSlider: resetPositionSlider,
+    resetPosition: resetPosition,
   };
 
 })();

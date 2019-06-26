@@ -45,12 +45,12 @@
   var increaseButtonElement = imageEditingFormElement.querySelector('.scale__control--bigger');
   var decreaseButtonElement = imageEditingFormElement.querySelector('.scale__control--smaller');
 
-  var addHandlersResizeButton = function () {
+  var addHandlersButton = function () {
     increaseButtonElement.addEventListener('click', onImageIncreaseButtonClick);
     decreaseButtonElement.addEventListener('click', onImageDecreaseButtonClick);
   };
 
-  var removeHandlersResizeButton = function () {
+  var removeHandlersButton = function () {
     increaseButtonElement.removeEventListener('click', onImageIncreaseButtonClick);
     decreaseButtonElement.removeEventListener('click', onImageDecreaseButtonClick);
   };
@@ -62,7 +62,7 @@
 
   window.resizePhotoPreview = {
     reset: reset,
-    addHandlersResizeButton: addHandlersResizeButton,
-    removeHandlersResizeButton: removeHandlersResizeButton,
+    addHandlersButton: addHandlersButton,
+    removeHandlersButton: removeHandlersButton,
   };
 })();

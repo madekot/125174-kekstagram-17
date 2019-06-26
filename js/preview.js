@@ -18,8 +18,8 @@
     imgUploadOverlayElement.classList.remove('hidden'); // Показывает попап редактирования;
     closeButtonImageEditingFormElement.addEventListener('click', onСloseButtonImageEditingFormClick);
     document.addEventListener('keydown', onImageEditingFormEsckey);
-    window.resizePhotoPreview.addHandlersResizeButton();
-    window.slider.resetPositionSlider(); // Сбрасывает прогресс бар и ручку глубины эфекта, в положение дефолта;
+    window.resizePhotoPreview.addHandlersButton();
+    window.slider.resetPosition(); // Сбрасывает прогресс бар и ручку глубины эфекта, в положение дефолта;
     effectDepthSliderElement.classList.add('hidden'); // скрываю слайдер прогресс бара;
   };
 
@@ -33,7 +33,7 @@
     imgUploadOverlayElement.classList.add('hidden');
     closeButtonImageEditingFormElement.removeEventListener('click', onСloseButtonImageEditingFormClick);
     document.removeEventListener('keydown', onImageEditingFormEsckey);
-    window.resizePhotoPreview.removeHandlersResizeButton();
+    window.resizePhotoPreview.removeHandlersButton();
   };
 
   var onСloseButtonImageEditingFormClick = function () { // Когда разобью на модули нужно ПОМЕНЯТЬ НАЗВАНИЕ.

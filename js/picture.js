@@ -13,9 +13,9 @@
     return photoElement;
   };
 
-  var renderPhotosElements = function (simulationParrentElement, mockArr) {
+  var renderPhotosElements = function (simulationParrentElement, dataArr) {
     var fragment = document.createDocumentFragment();
-    mockArr.forEach(function (photo) {
+    dataArr.forEach(function (photo) {
       var photoElement = createPhotoElement(photo);
       fragment.appendChild(photoElement);
     });

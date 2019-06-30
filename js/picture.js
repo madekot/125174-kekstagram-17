@@ -9,19 +9,19 @@
     var likeElement = photoElement.querySelector('.picture__likes');
     likeElement.textContent = coment.likes;
     var commentElement = photoElement.querySelector('.picture__comments');
-    commentElement.textContent = coment.message.length;
+    commentElement.textContent = coment.comments.length;
     return photoElement;
   };
 
-  var renderPhotosElements = function (simulationParrentElement, dataArr) {
+  var simulationPictureElement = document.querySelector('.pictures');
+  var renderPhotosElements = function (dataArr) {
     var fragment = document.createDocumentFragment();
     dataArr.forEach(function (photo) {
       var photoElement = createPhotoElement(photo);
       fragment.appendChild(photoElement);
     });
-    simulationParrentElement.appendChild(fragment);
+    simulationPictureElement.appendChild(fragment);
   };
 
-  var simulationPictureElement = document.querySelector('.pictures');
-  renderPhotosElements(simulationPictureElement, window.data);
+  window.backend.load(renderPhotosElements);
 })();

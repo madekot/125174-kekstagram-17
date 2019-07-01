@@ -1,6 +1,6 @@
 'use strict';
 (function () {
-  var RANDOM_CARD = 10;
+  var RANDOM_CARD_COUNT = 10;
 
   var originalDataCards = [];
 
@@ -18,7 +18,7 @@
 
   var removePhotoCards = function () {
     var photoCards = document.querySelectorAll('.picture');
-    for (var i = photoCards.length - 1; i >= 0; i--) {
+    for (var i = 0; i < photoCards.length; i++) {
       var photoCard = photoCards[i];
       photoCard.parentElement.removeChild(photoCard);
     }
@@ -33,7 +33,7 @@
 
   var getRandomCards = function () {
     var cloneDataCards = originalDataCards.slice();
-    return window.utility.random.shuffleArray(cloneDataCards).slice(0, RANDOM_CARD);
+    return window.utility.random.shuffleArray(cloneDataCards).slice(0, RANDOM_CARD_COUNT);
   };
 
   var newFilter = menu.querySelector('#filter-new');
@@ -47,7 +47,7 @@
   var getDebateCards = function () {
     var cloneDataCards = originalDataCards.slice();
     cloneDataCards.sort(function (a, b) {
-      return a.comments.length > b.comments.length ? 1 : -1;
+      return a.comments.length < b.comments.length ? 1 : -1;
     });
     return cloneDataCards;
   };

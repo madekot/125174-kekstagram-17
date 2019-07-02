@@ -3,7 +3,7 @@
   var THROTTLE_INTERVAL = 500; // ms
 
   var isTimeout = true;
-  window.debounce = function (cb, interval) {
+  window.throttle = function (cb, interval) {
     interval = interval || THROTTLE_INTERVAL;
     if (isTimeout) {
       cb();

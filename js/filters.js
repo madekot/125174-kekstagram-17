@@ -25,7 +25,7 @@
   };
 
   popularFilter.addEventListener('click', function () {
-    window.debounce(function () {
+    window.throttle(function () {
       removePhotoCards();
       window.picture.render(originalDataCards);
     });
@@ -38,7 +38,7 @@
 
   var newFilter = menu.querySelector('#filter-new');
   newFilter.addEventListener('click', function () {
-    window.debounce(function () {
+    window.throttle(function () {
       removePhotoCards();
       window.picture.render(getRandomCards());
     });
@@ -54,7 +54,7 @@
 
   var discussedFilter = menu.querySelector('#filter-discussed');
   discussedFilter.addEventListener('click', function () {
-    window.debounce(function () {
+    window.throttle(function () {
       removePhotoCards();
       window.picture.render(getDebateCards());
     });

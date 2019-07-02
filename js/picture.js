@@ -14,6 +14,7 @@
   };
 
   var simulationPictureElement = document.querySelector('.pictures');
+
   var renderPhotosElements = function (dataArr) {
     var fragment = document.createDocumentFragment();
     dataArr.forEach(function (photo) {
@@ -23,5 +24,8 @@
     simulationPictureElement.appendChild(fragment);
   };
 
-  window.backend.load(renderPhotosElements);
+  window.picture = {
+    render: renderPhotosElements,
+  };
+
 })();

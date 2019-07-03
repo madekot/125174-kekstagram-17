@@ -2,20 +2,8 @@
 (function () {
   var RANDOM_CARD_COUNT = 10;
 
-  var originalDataCards = [];
-
-  var onLoad = function (data) {
-    originalDataCards = data;
-    window.picture.render(originalDataCards);
-    window.fullScreenPhoto.addInformationPhoto(originalDataCards);
-  };
-
-  window.backend.load(onLoad);
-
   var menu = document.querySelector('.img-filters');
   menu.classList.remove('img-filters--inactive');
-
-  var popularFilter = menu.querySelector('#filter-popular');
 
   var removePhotoCards = function () {
     var photoCards = document.querySelectorAll('.picture');
@@ -25,15 +13,16 @@
     }
   };
 
+  var popularFilter = menu.querySelector('#filter-popular');
   popularFilter.addEventListener('click', function () {
     window.throttle(function () {
       removePhotoCards();
-      window.picture.render(originalDataCards);
+      window.picture.render(window.backend.data());
     });
   });
 
   var getRandomCards = function () {
-    var cloneDataCards = originalDataCards.slice();
+    var cloneDataCards = window.backend.data().slice();
     return window.utility.random.shuffleArray(cloneDataCards).slice(0, RANDOM_CARD_COUNT);
   };
 
@@ -46,7 +35,7 @@
   });
 
   var getDebateCards = function () {
-    var cloneDataCards = originalDataCards.slice();
+    var cloneDataCards = window.backend.data().slice();
     cloneDataCards.sort(function (a, b) {
       return a.comments.length < b.comments.length ? 1 : -1;
     });
@@ -60,9 +49,5 @@
       window.picture.render(getDebateCards());
     });
   });
-
-  window.filters = {
-    onLoad: onLoad,
-  };
 
 })();

@@ -6,7 +6,8 @@
 
   var onLoad = function (data) {
     originalDataCards = data;
-    window.picture.render(data);
+    window.picture.render(originalDataCards);
+    window.fullScreenPhoto.addInformationPhoto(originalDataCards);
   };
 
   window.backend.load(onLoad);
@@ -59,5 +60,9 @@
       window.picture.render(getDebateCards());
     });
   });
+
+  window.filters = {
+    onLoad: onLoad,
+  };
 
 })();

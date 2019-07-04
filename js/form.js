@@ -1,8 +1,8 @@
 'use strict';
 (function () {
-  var imageEditingFormElement = document.querySelector('.img-upload'); // форма редактирования фото
+  var imageEditingFormElement = document.querySelector('.img-upload');
   var commentFormEditingElement = imageEditingFormElement.querySelector('.text__description');
-  var checkOnFocus = function (evt) { // Возвращает false если target это форма коментариев, иначе true;
+  var checkOnFocus = function (evt) {
     return evt.target !== commentFormEditingElement;
   };
 

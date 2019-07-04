@@ -58,7 +58,21 @@
     xhr.send();
   };
 
+  var dataCards = [];
+  var onLoad = function (data) {
+    dataCards = data;
+    window.picture.render(dataCards);
+    window.fullScreenPhoto.addInformationPhoto(dataCards);
+  };
+
+  load(onLoad);
+
+  var getDataCards = function () {
+    return dataCards;
+  };
+
   window.backend = {
     load: load,
+    data: getDataCards,
   };
 })();

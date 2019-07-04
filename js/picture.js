@@ -22,6 +22,7 @@
       fragment.appendChild(photoElement);
     });
     simulationPictureElement.appendChild(fragment);
+    window.fullScreenPhoto.addEventListenerPictures();
   };
 
   window.picture = {

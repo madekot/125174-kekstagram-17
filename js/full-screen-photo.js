@@ -75,24 +75,8 @@
     setDescription(data[index].description);
   };
 
-  var addEventListenerPicture = function (picture, index, pictures) {
-    picture.addEventListener('click', function () {
-      addInformationPhoto(pictures, index);
-      openBigPicture();
-    });
-  };
-
-  var addEventListenerPictures = function (pictures) {
-    var ElementsPictures = document.querySelectorAll('.picture');
-    for (var i = 0; i < ElementsPictures.length; i++) {
-      var indexElement = i;
-      var pictureElement = ElementsPictures[i];
-      addEventListenerPicture(pictureElement, indexElement, pictures);
-    }
-  };
-
   window.fullScreenPhoto = {
     addInformationPhoto: addInformationPhoto,
-    addEventListenerPictures: addEventListenerPictures,
+    open: openBigPicture,
   };
 })();

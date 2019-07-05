@@ -22,7 +22,23 @@
       fragment.appendChild(photoElement);
     });
     simulationPictureElement.appendChild(fragment);
-    window.fullScreenPhoto.addEventListenerPictures(dataArr);
+    addEventListenerPictures(dataArr);
+  };
+
+  var addEventListenerPicture = function (picture, index, pictures) {
+    picture.addEventListener('click', function () {
+      window.fullScreenPhoto.addInformationPhoto(pictures, index);
+      window.fullScreenPhoto.open();
+    });
+  };
+
+  var addEventListenerPictures = function (pictures) {
+    var ElementsPictures = document.querySelectorAll('.picture');
+    for (var i = 0; i < ElementsPictures.length; i++) {
+      var indexElement = i;
+      var pictureElement = ElementsPictures[i];
+      addEventListenerPicture(pictureElement, indexElement, pictures);
+    }
   };
 
   window.picture = {

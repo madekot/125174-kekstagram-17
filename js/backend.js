@@ -62,7 +62,6 @@
   var onLoad = function (data) {
     dataCards = data;
     window.picture.render(dataCards);
-    window.fullScreenPhoto.addInformationPhoto(dataCards);
   };
 
   load(onLoad);

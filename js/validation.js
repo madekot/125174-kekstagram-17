@@ -1,41 +1,41 @@
 'use strict';
 (function () {
-  var SIMBOL_HASHTAG = '#';
+  var SYMBOL_HASHTAG = '#';
   var POSITION_HASHTAG = 1;
   var MIN_LENGTH_HASHTAG = 1;
   var MAX_LENGTH_HASHTAG = 20;
   var MAX_LENGTH_HASHTAGS = 5;
 
-  var checksIsFirstSimbolHashtag = function (hashtag) {
-    return hashtag.charAt(0) === SIMBOL_HASHTAG || hashtag.charAt(0) === '';
+  var checksIsFirstSymbolHashtag = function (hashtag) {
+    return hashtag.charAt(0) === SYMBOL_HASHTAG || hashtag.charAt(0) === '';
   };
 
-  var checksIsMaxLengthHashtag = function (hashtag) {
+  var checkIsMaxLengthHashtag = function (hashtag) {
     return hashtag.length < MAX_LENGTH_HASHTAG;
   };
 
-  var checksIsContentHashtag = function (hashtag) {
-    return hashtag.charAt(0) !== SIMBOL_HASHTAG || hashtag.length > MIN_LENGTH_HASHTAG;
+  var checkHasContentHashtag = function (hashtag) {
+    return hashtag.charAt(0) !== SYMBOL_HASHTAG || hashtag.length > MIN_LENGTH_HASHTAG;
   };
 
-  var checksIsSeparationHashtags = function (hashtag) {
-    return hashtag.indexOf(SIMBOL_HASHTAG, POSITION_HASHTAG) === -1 ? true : false;
+  var checkIsSeparatedHashtags = function (hashtag) {
+    return hashtag.indexOf(SYMBOL_HASHTAG, POSITION_HASHTAG) === -1;
   };
 
-  var remakeToLowerCase = function (hashtags) {
-    var cloneHashtags = hashtags.slice();
-    for (var i = 0; i < cloneHashtags.length; i++) {
-      var hashtag = cloneHashtags[i].toLowerCase();
-      cloneHashtags[i] = hashtag;
-    }
-    return cloneHashtags;
+  var getHashtagsArr = function (HashtagsStr) {
+    return HashtagsStr.trim().split(' ').filter(function (hashtag) {
+      return hashtag !== '';
+    });
   };
 
-  var checksIsLengthHashtags = function (hashtags) {
-    var cloneHashtags = remakeToLowerCase(hashtags);
+  var hashtagsElement = document.querySelector('.text__hashtags');
+
+  var checkIsDuplicateHashtags = function () {
+    var hashtags = getHashtagsArr(hashtagsElement.value.toLowerCase());
     var startingSearch = 1;
-    for (var i = 0; i < cloneHashtags.length; i++) {
-      var positionIndexRecurrence = cloneHashtags.indexOf(cloneHashtags[i].toLowerCase(), startingSearch++);
+    for (var i = 0; i < hashtags.length; i++) {
+      var hashtag = hashtags[i];
+      var positionIndexRecurrence = hashtags.indexOf(hashtag, startingSearch++);
       if (positionIndexRecurrence !== -1) {
         return false;
       }
@@ -43,62 +43,71 @@
     return true;
   };
 
-  var removeReplays = function (arr) {
-    var obj = {};
-    for (var i = 0; i < arr.length; i++) {
-      var str = arr[i];
-      obj[str] = true;
-    }
-    return Object.keys(obj);
-  };
-
-  var checksIsMaxLengthHashtags = function (hashtags) {
+  var checkIsMaxLengthHashtags = function (hashtags) {
     return hashtags.length <= MAX_LENGTH_HASHTAGS;
   };
 
-  var getMessageError = function (hashtags) {
-    var message = [];
-    if (!checksIsMaxLengthHashtags(hashtags)) {
-      message.push('Нельзя указывать больше пяти хэш-тегов');
+  var getMessageHashtagsError = function (messageObj, hashtags) {
+    if (!checkIsMaxLengthHashtags(hashtags)) {
+      messageObj.maxLengthHashtags = 'Нельзя указывать больше пяти хэш-тегов.';
     }
-    if (!checksIsLengthHashtags(hashtags)) {
-      message.push('Один и тот же хэш-тег не может быть использован дважды');
+    if (!checkIsDuplicateHashtags(hashtags)) {
+      messageObj.duplicateHashtags = 'Один и тот же хэш-тег не может быть использован дважды.';
     }
-
-    for (var i = 0; i < hashtags.length; i++) {
-      var hashtag = hashtags[i];
-      if (!checksIsFirstSimbolHashtag(hashtag)) {
-        message.push('Хеш-тегу нужно начинается с символа #');
-      }
-      if (!checksIsContentHashtag(hashtag)) {
-        message.push('Хеш-тег не может состоять только из #;');
-      }
-      if (!checksIsSeparationHashtags(hashtag)) {
-        message.push('Хэш-теги нужно разделять пробелами');
-      }
-      if (!checksIsMaxLengthHashtag(hashtag)) {
-        message.push('Максимальная длина одного хэш-тега 20 символов, включая решётку');
-      }
-    }
-
-    return removeReplays(message).join('. \n');
   };
 
-  var hashtagsElement = document.querySelector('.text__hashtags');
+  var getMessageHashtagError = function (messageObj, hashtags) {
+    hashtags.forEach(function (hashtag) {
+      if (!checksIsFirstSymbolHashtag(hashtag)) {
+        messageObj.firstSymbolHashtag = 'Хеш-тегу нужно начинается с символа #.';
+      }
+      if (!checkHasContentHashtag(hashtag)) {
+        messageObj.hasContentHashtag = 'Хеш-тег не может состоять только из #';
+      }
+      if (!checkIsSeparatedHashtags(hashtag)) {
+        messageObj.separatedHashtags = 'Хэш-теги нужно разделять пробелами.';
+      }
+      if (!checkIsMaxLengthHashtag(hashtag)) {
+        messageObj.maxLengthHashtag = 'Максимальная длина одного хэш-тега 20 символов, включая решётку.';
+      }
+    });
+  };
+
+  var messageErrorJoin = function (messageObj) {
+    var message = '';
+    for (var hastag in messageObj) {
+      if ({}.hasOwnProperty.call(messageObj, hastag)) {
+        message += messageObj[hastag] + ' \n';
+      }
+    }
+    return message;
+  };
+
+  var getMessageError = function () {
+    var messageObj = {};
+    var hashtags = getHashtagsArr(hashtagsElement.value);
+    getMessageHashtagsError(messageObj, hashtags);
+    getMessageHashtagError(messageObj, hashtags);
+    return messageErrorJoin(messageObj);
+  };
+
   var clearCustomValidity = function () {
     hashtagsElement.setCustomValidity('');
   };
 
-  var checksIsValidation = function () {
-    var hashtags = hashtagsElement.value.trim().split(' ');
-    var messages = getMessageError(hashtags);
+  var setHashtagField = function () {
+    var hashtags = getHashtagsArr(hashtagsElement.value);
+    hashtagsElement.value = hashtags.join(' ');
+  };
+
+  var checkIsValid = function () {
     clearCustomValidity();
-    if (messages.length !== 0) {
-      hashtagsElement.setCustomValidity(messages);
-    }
+    var messages = getMessageError();
+    hashtagsElement.setCustomValidity(messages);
+    setHashtagField();
   };
 
   window.validation = {
-    checks: checksIsValidation,
+    check: checkIsValid,
   };
 })();

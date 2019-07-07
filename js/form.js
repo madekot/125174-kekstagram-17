@@ -8,7 +8,7 @@
   };
 
   submitBatton.addEventListener('click', function () {
-    window.validation.checks();
+    window.validation.check();
   });
 
   window.form = {

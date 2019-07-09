@@ -6,9 +6,11 @@
 
   var imgUploadOverlayElement = imageEditingFormElement.querySelector('.img-upload__overlay');
   var closeButtonImageEditingFormElement = imageEditingFormElement.querySelector('#upload-cancel');
+  var commentFormEditingElement = imageEditingFormElement.querySelector('.text__description');
+  var hashtagsElement = document.querySelector('.text__hashtags');
 
   var onImageEditingFormEsckey = function (evt) {
-    if (window.utility.keyboard.isEscPressed(evt) && window.form.checkFormOnFocus(evt)) {
+    if (window.utility.keyboard.isEscPressed(evt) && window.form.checkOnFocus(evt, commentFormEditingElement) && window.form.checkOnFocus(evt, hashtagsElement)) {
       closeImageEditingForm();
     }
   };

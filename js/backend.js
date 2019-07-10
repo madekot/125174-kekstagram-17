@@ -1,6 +1,7 @@
 'use strict';
 (function () {
   var SET_TIMEOUT = 10000; // 10s
+  var formElement = document.querySelector('#upload-select-image');
 
   var addListenerLoad = function (xhr, onLoad, onError) {
     xhr.addEventListener('load', function () {
@@ -58,13 +59,38 @@
     xhr.send();
   };
 
+  var save = function (data, onLoad, onError) {
+    data.addEventListener('submit', function (evt) {
+      evt.preventDefault();
+      var formData = new FormData(data);
+      var xhr = new XMLHttpRequest();
+      xhr.responseType = 'json';
+
+      addListenerLoad(xhr, onLoad, onError);
+      addListenerError(xhr, onError);
+      addListenerTimeOut(xhr, onError, SET_TIMEOUT);
+
+      xhr.open('POST', 'https://js.dump.academy/kekstagram');
+      xhr.send(formData);
+    });
+  };
+
   var dataCards = [];
   var onLoad = function (data) {
     dataCards = data;
     window.picture.render(dataCards);
   };
 
+  var onSave = function () {
+    window.popupMessage.showSuccess();
+  };
+
+  var onError = function () {
+    window.popupMessage.showError();
+  };
+
   load(onLoad);
+  save(formElement, onSave, onError);
 
   var getDataCards = function () {
     return dataCards;

@@ -7,6 +7,11 @@
     return evt.target !== element;
   };
 
+  var formElement = document.querySelector('#upload-select-image');
+  formElement.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+  });
+
   submitBatton.addEventListener('click', function () {
     window.validation.check();
   });

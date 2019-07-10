@@ -100,12 +100,27 @@
     hashtagsElement.value = hashtags.join(' ');
   };
 
+  var clearFieldHashtag = function () {
+    hashtagsElement.value = '';
+  };
+
+  var showErrorField = function (message) {
+    if (message) {
+      hashtagsElement.style.borderColor = 'red';
+    } else {
+      hashtagsElement.style.borderColor = '';
+      clearFieldHashtag();
+    }
+  };
+
   var checkIsValid = function () {
     clearCustomValidity();
     var messages = getMessageError();
     hashtagsElement.setCustomValidity(messages);
+    showErrorField(messages);
     setHashtagField();
   };
+
 
   window.validation = {
     check: checkIsValid,

@@ -35,17 +35,16 @@
     listComentsElement.innerHTML = '';
   };
 
-  var hideCountCommentsAndNewComments = function () {
-    var countCommentsElement = bigPictureElement.querySelector('.social__comment-count');
-    var newCommentsElement = bigPictureElement.querySelector('.comments-loader');
-    countCommentsElement.classList.add('visually-hidden');
-    newCommentsElement.classList.add('visually-hidden');
-  };
-
   var openBigPicture = function () {
     bigPictureElement.classList.remove('hidden');
     document.addEventListener('keydown', oncloseBattonBigPictureElementKeyDown);
+    window.commentsMore.hidden();
   };
+
+  var buttonMoreComment = document.querySelector('.social__comments-loader');
+  buttonMoreComment.addEventListener('click', function () {
+    window.commentsMore.show();
+  });
 
   var closeBigPicture = function () {
     bigPictureElement.classList.add('hidden');
@@ -67,7 +66,6 @@
     var likes = bigPictureElement.querySelector('.likes-count');
     var commentsCount = bigPictureElement.querySelector('.comments-count');
     clearComments();
-    hideCountCommentsAndNewComments();
     image.src = data[index].url;
     likes.textContent = data[index].likes;
     commentsCount.textContent = data[index].comments.length;

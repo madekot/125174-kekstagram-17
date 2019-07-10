@@ -42,4 +42,8 @@
     closeImageEditingForm();
   };
 
+  window.preview = {
+    close: closeImageEditingForm,
+  };
+
 })();

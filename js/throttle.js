@@ -1,6 +1,6 @@
 'use strict';
 (function () {
-  var THROTTLE_INTERVAL = 500; // ms
+  var THROTTLE_INTERVAL = 500;
 
   var isTimeout = true;
   window.throttle = function (cb, interval) {

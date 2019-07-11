@@ -7,17 +7,17 @@
   var NUMBER_SYSTEM = 10;
   var RESIZING_STEP = 25;
 
-  var imageEditingFormElement = document.querySelector('.img-upload'); // форма редактирования фото
-  var sizeFieldElement = imageEditingFormElement.querySelector('.scale__control--value'); // поле размера фото;
-  var imagePreviewElement = imageEditingFormElement.querySelector('.img-upload__preview img'); // Изображение превью
+  var imageEditingFormElement = document.querySelector('.img-upload');
+  var sizeFieldElement = imageEditingFormElement.querySelector('.scale__control--value');
+  var imagePreviewElement = imageEditingFormElement.querySelector('.img-upload__preview img');
 
   var resizePhotoPreview = function (value) {
     value = value / 100;
     imagePreviewElement.style.transform = 'scale(' + value + ')';
   };
 
-  var increaseFieldValue = function () { // Увеличивает значения поля размера фото
-    var sizeFieldElementvalue = parseInt(sizeFieldElement.value, NUMBER_SYSTEM); // вытаскивает число из строки значения поля;
+  var increaseFieldValue = function () {
+    var sizeFieldElementvalue = parseInt(sizeFieldElement.value, NUMBER_SYSTEM);
     if (sizeFieldElementvalue < MAX_SIZE) {
       sizeFieldElementvalue += RESIZING_STEP;
       sizeFieldElement.value = sizeFieldElementvalue + '%';
@@ -25,8 +25,8 @@
     return sizeFieldElementvalue;
   };
 
-  var decreaseFieldValue = function () { // Уменьшает значения поля размера фото
-    var sizeFieldElementvalue = parseInt(sizeFieldElement.value, NUMBER_SYSTEM); // вытаскивает число из строки значения поля;
+  var decreaseFieldValue = function () {
+    var sizeFieldElementvalue = parseInt(sizeFieldElement.value, NUMBER_SYSTEM);
     if (sizeFieldElementvalue > MIN_SIZE) {
       sizeFieldElementvalue -= RESIZING_STEP;
       sizeFieldElement.value = sizeFieldElementvalue + '%';
@@ -34,11 +34,11 @@
     return sizeFieldElementvalue;
   };
 
-  var onImageIncreaseButtonClick = function () { // увеличивает значения поля размера;
+  var onImageIncreaseButtonClick = function () {
     resizePhotoPreview(increaseFieldValue());
   };
 
-  var onImageDecreaseButtonClick = function () { // уменьшает значения поля размера;
+  var onImageDecreaseButtonClick = function () {
     resizePhotoPreview(decreaseFieldValue());
   };
 
@@ -57,7 +57,7 @@
 
   var reset = function () {
     sizeFieldElement.value = DEFAULT_VALUE_SIZE_FIELD + '%';
-    imagePreviewElement.style.transform = 'scale(' + DEFAULT_VALUE_SIZE_FIELD_TRANSFORM + ')'; // Сбрасывает размер изображения формы редактирования к дефолтному значению;
+    imagePreviewElement.style.transform = 'scale(' + DEFAULT_VALUE_SIZE_FIELD_TRANSFORM + ')';
   };
 
   window.resizePhotoPreview = {

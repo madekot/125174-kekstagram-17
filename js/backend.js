@@ -1,6 +1,6 @@
 'use strict';
 (function () {
-  var SET_TIMEOUT = 10000; // 10s
+  var SET_TIMEOUT = 10000;
   var formElement = document.querySelector('#upload-select-image');
 
   var addListenerLoad = function (xhr, onLoad, onError) {

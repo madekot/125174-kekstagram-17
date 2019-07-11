@@ -1,7 +1,7 @@
 'use strict';
 (function () {
 
-  var imageEditingFormElement = document.querySelector('.img-upload'); // форма редактирования фото
+  var imageEditingFormElement = document.querySelector('.img-upload');
   var effectDepthSliderElement = imageEditingFormElement.querySelector('.img-upload__effect-level');
 
   var imgUploadOverlayElement = imageEditingFormElement.querySelector('.img-upload__overlay');

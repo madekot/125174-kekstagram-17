@@ -1,7 +1,7 @@
 'use strict';
 (function () {
 
-  var imageEditingFormElement = document.querySelector('.img-upload'); // форма редактирования фото
+  var imageEditingFormElement = document.querySelector('.img-upload');
   var effectDepthSliderElement = imageEditingFormElement.querySelector('.img-upload__effect-level');
 
   var imgUploadOverlayElement = imageEditingFormElement.querySelector('.img-upload__overlay');
@@ -15,30 +15,30 @@
     }
   };
 
-  var openImageEditingForm = function () { // открывает попап редактирования;
-    window.resizePhotoPreview.reset(); // Устанавливает значение по умолчанию, для поля размера фото;
-    imgUploadOverlayElement.classList.remove('hidden'); // Показывает попап редактирования;
+  var openImageEditingForm = function () {
+    window.resizePhotoPreview.reset();
+    imgUploadOverlayElement.classList.remove('hidden');
     closeButtonImageEditingFormElement.addEventListener('click', onСloseButtonImageEditingFormClick);
     document.addEventListener('keydown', onImageEditingFormEsckey);
     window.resizePhotoPreview.addHandlersButton();
-    window.slider.resetPosition(); // Сбрасывает прогресс бар и ручку глубины эфекта, в положение дефолта;
-    effectDepthSliderElement.classList.add('hidden'); // скрываю слайдер прогресс бара;
+    window.slider.resetPosition();
+    effectDepthSliderElement.classList.add('hidden');
   };
 
   var uploadFileFieldElement = imageEditingFormElement.querySelector('#upload-file');
-  uploadFileFieldElement.addEventListener('change', function () { // вешает обработчик на поле загрузки фото и слушает событие change;
+  uploadFileFieldElement.addEventListener('change', function () {
     openImageEditingForm();
   });
 
-  var closeImageEditingForm = function () { // закрывает попап редактирования;
-    uploadFileFieldElement.value = ''; // сбрасываю значения поля. для повторной работы события 'change';
+  var closeImageEditingForm = function () {
+    uploadFileFieldElement.value = '';
     imgUploadOverlayElement.classList.add('hidden');
     closeButtonImageEditingFormElement.removeEventListener('click', onСloseButtonImageEditingFormClick);
     document.removeEventListener('keydown', onImageEditingFormEsckey);
     window.resizePhotoPreview.removeHandlersButton();
   };
 
-  var onСloseButtonImageEditingFormClick = function () { // Когда разобью на модули нужно ПОМЕНЯТЬ НАЗВАНИЕ.
+  var onСloseButtonImageEditingFormClick = function () {
     closeImageEditingForm();
   };
 

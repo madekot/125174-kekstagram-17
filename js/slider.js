@@ -7,7 +7,7 @@
   var FILTER_MAX_VALUE = [1, 1, 100, 3, 3];
   var FILTER_NAMES = ['grayscale', 'sepia', 'invert', 'blur', 'brightness'];
 
-  var imageEditingFormElement = document.querySelector('.img-upload'); // форма редактирования фото
+  var imageEditingFormElement = document.querySelector('.img-upload');
 
   var resetClassListFilter = function (element, filterClasses) {
     filterClasses.forEach(function (nameClass) {
@@ -60,12 +60,12 @@
   };
 
   var pinSliderElement = effectDepthSliderElement.querySelector('.effect-level__pin');
-  var effectLevelValueElement = effectDepthSliderElement.querySelector('.effect-level__value'); // поле значения эфекта слайдера
-  var imagePreviewElement = imageEditingFormElement.querySelector('.img-upload__preview img'); // Изображение на котором применяются фильтры
+  var effectLevelValueElement = effectDepthSliderElement.querySelector('.effect-level__value');
+  var imagePreviewElement = imageEditingFormElement.querySelector('.img-upload__preview img');
   pinSliderElement.addEventListener('mouseup', function () {
     var effectValue = effectLevelValueElement.value;
     effectValue = getPositionPinSliderPercent();
-    imagePreviewElement.style.filter = convertClassToFilterStyle(effectValue);// накладываает фильтр
+    imagePreviewElement.style.filter = convertClassToFilterStyle(effectValue);
   });
 
   pinSliderElement.addEventListener('mousedown', function (mouseDownEvt) {
@@ -81,7 +81,7 @@
 
       var effectValue = effectLevelValueElement.value;
       effectValue = getPositionPinSliderPercent();
-      imagePreviewElement.style.filter = convertClassToFilterStyle(effectValue);// накладываает фильтр
+      imagePreviewElement.style.filter = convertClassToFilterStyle(effectValue);
 
       var centerPinPercent = (pinSliderElement.clientWidth / 2) / 100;
       pinSliderElement.style.left = ((pinSliderElement.offsetLeft - shiftCoordinatesMouse) - centerPinPercent) + 'px';
@@ -106,11 +106,11 @@
 
   var addClassAddChangeEvent = function (imageFilterPreviewElement, filterClass) {
     imageFilterPreviewElement.addEventListener('click', function () {
-      resetClassListFilter(imagePreviewElement, FILTER_CLASSES); // Удаляет старые классы фильтров с превью картинки;
-      imagePreviewElement.classList.add(filterClass); // Добавляет класс фильтра на превью картинку;
-      resetPosition(DEFAULT_SLAYDER_POSITION); // Сбрасывает прогресс бар и ручку глубины эфекта, в положение дефолта;
-      hideOrShowSlider(filterClass, FILTER_DEFAULT_CLASS); // Cкрывает или показывает слайдер изменения эффекта;
-      imagePreviewElement.style.filter = ''; // сбрасываю инлайновые стили фильтров у главной картинки превью;
+      resetClassListFilter(imagePreviewElement, FILTER_CLASSES);
+      imagePreviewElement.classList.add(filterClass);
+      resetPosition(DEFAULT_SLAYDER_POSITION);
+      hideOrShowSlider(filterClass, FILTER_DEFAULT_CLASS);
+      imagePreviewElement.style.filter = '';
     });
   };
 

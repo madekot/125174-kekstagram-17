@@ -13,7 +13,7 @@
     buttonMoreComment.classList.remove('hidden');
   };
 
-  var hiddenComments = function () {
+  var hideComments = function () {
     var comments = document.querySelectorAll('.social__comment');
     for (var i = SHOW_FIRST_COMMENTS; i < comments.length; i++) {
       var comment = comments[i];
@@ -21,7 +21,7 @@
     }
   };
 
-  var showNextComment = function () {
+  var showNextComments = function () {
     var commentsHidden = document.querySelectorAll('.social__comment.visually-hidden');
     for (var i = 0; i < SHOW_NEXT_COMMENTS; i++) {
       var commentHidden = commentsHidden[i];
@@ -50,8 +50,8 @@
   };
 
   window.commentsMore = {
-    hidden: hiddenComments,
-    show: showNextComment,
+    hidden: hideComments,
+    show: showNextComments,
     upgradeCommentsCounIfFewPhotos: upgradeCommentsCounIfFewPhotos,
     showButtonMoreComment: showButtonMoreComment,
     setCommentsCoun: setCommentsCoun,

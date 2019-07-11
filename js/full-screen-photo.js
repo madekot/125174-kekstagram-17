@@ -44,6 +44,7 @@
   var buttonMoreComment = document.querySelector('.social__comments-loader');
   buttonMoreComment.addEventListener('click', function () {
     window.commentsMore.show();
+    window.commentsMore.setCommentsCoun();
   });
 
   var closeBigPicture = function () {
@@ -64,11 +65,11 @@
   var addInformationPhoto = function (data, index) {
     var image = bigPictureElement.querySelector('.big-picture__img img');
     var likes = bigPictureElement.querySelector('.likes-count');
-    var commentsCount = bigPictureElement.querySelector('.comments-count');
     clearComments();
+    window.commentsMore.showButtonMoreComment();
     image.src = data[index].url;
     likes.textContent = data[index].likes;
-    commentsCount.textContent = data[index].comments.length;
+    window.commentsMore.upgradeCommentsCounIfFewPhotos(data, index);
     addComments(data[index].comments);
     setDescription(data[index].description);
   };

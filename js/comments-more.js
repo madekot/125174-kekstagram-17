@@ -2,6 +2,7 @@
 (function () {
   var SHOW_FIRST_COMMENTS = 5;
   var SHOW_NEXT_COMMENTS = 5;
+  var NEXT_COMMENT = 1;
 
   var bigPictureElement = document.querySelector('.big-picture');
   var buttonMoreComment = document.querySelector('.social__comments-loader');
@@ -23,14 +24,16 @@
 
   var showNextComments = function () {
     var commentsHidden = document.querySelectorAll('.social__comment.visually-hidden');
+
     for (var i = 0; i < SHOW_NEXT_COMMENTS; i++) {
       var commentHidden = commentsHidden[i];
       if (!commentHidden) {
         hiddenButtonMoreComment();
         break;
-      } else {
-        commentHidden.classList.remove('visually-hidden');
+      } else if (!commentsHidden[i + NEXT_COMMENT]) {
+        hiddenButtonMoreComment();
       }
+      commentHidden.classList.remove('visually-hidden');
     }
   };
 

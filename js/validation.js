@@ -109,7 +109,6 @@
       hashtagsElement.style.borderColor = 'red';
     } else {
       hashtagsElement.style.borderColor = '';
-      clearFieldHashtag();
     }
   };
 
@@ -121,8 +120,8 @@
     setHashtagField();
   };
 
-
   window.validation = {
     check: checkIsValid,
+    clearFieldHashtag: clearFieldHashtag,
   };
 })();

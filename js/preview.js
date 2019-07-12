@@ -16,6 +16,8 @@
   };
 
   var openImageEditingForm = function () {
+    window.form.clearDescription();
+    window.slider.resetAffect();
     window.resizePhotoPreview.reset();
     imgUploadOverlayElement.classList.remove('hidden');
     closeButtonImageEditingFormElement.addEventListener('click', onСloseButtonImageEditingFormClick);

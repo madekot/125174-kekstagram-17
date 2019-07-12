@@ -23,6 +23,7 @@
     });
     simulationPictureElement.appendChild(fragment);
     addEventListenerPictures(dataArr);
+    window.filters.show();
   };
 
   var addEventListenerPicture = function (picture, index, pictures) {

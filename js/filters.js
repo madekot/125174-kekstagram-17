@@ -3,7 +3,9 @@
   var RANDOM_CARD_COUNT = 10;
 
   var menu = document.querySelector('.img-filters');
-  menu.classList.remove('img-filters--inactive');
+  var showFiltersMenu = function () {
+    menu.classList.remove('img-filters--inactive');
+  };
 
   var removePhotoCards = function () {
     var photoCards = document.querySelectorAll('.picture');
@@ -49,5 +51,9 @@
       window.picture.render(getDebateCards());
     });
   });
+
+  window.filters = {
+    show: showFiltersMenu
+  };
 
 })();

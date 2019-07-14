@@ -11,12 +11,12 @@
     return Boolean(getRandomNumber(0, 1));
   };
 
-  var getRandomArrayElement = function (arr) {
-    return arr[getRandomNumber(0, arr.length - 1)];
+  var getRandomArrayElement = function (multitude) {
+    return multitude[getRandomNumber(0, multitude.length - 1)];
   };
 
-  var shuffleArray = function (arr) {
-    return arr.sort(function () {
+  var shuffleArray = function (multitude) {
+    return multitude.sort(function () {
       return window.utility.random.boolean()
         ? -1
         : 1;

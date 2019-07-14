@@ -7,10 +7,10 @@
   var bigPictureElement = document.querySelector('.big-picture');
   var buttonMoreComment = document.querySelector('.social__comments-loader');
   var commentsCount = bigPictureElement.querySelector('.comments-count');
-  var hiddenButtonMoreComment = function () {
+  var hideButtonMoreComment = function () {
     buttonMoreComment.classList.add('hidden');
   };
-  var showButtonMoreComment = function () {
+  var showButtonMore = function () {
     buttonMoreComment.classList.remove('hidden');
   };
 
@@ -28,26 +28,26 @@
     for (var i = 0; i < SHOW_NEXT_COMMENTS; i++) {
       var commentHidden = commentsHidden[i];
       if (!commentHidden) {
-        hiddenButtonMoreComment();
+        hideButtonMoreComment();
         break;
       } else if (!commentsHidden[i + NEXT_COMMENT]) {
-        hiddenButtonMoreComment();
+        hideButtonMoreComment();
       }
       commentHidden.classList.remove('visually-hidden');
     }
   };
 
-  var upgradeCommentsCounIfFewPhotos = function (data, index) {
+  var upgradeCountIfFewPhotos = function (data, index) {
     if (data[index].comments.length <= SHOW_FIRST_COMMENTS) {
       commentsCount.previousSibling.textContent = data[index].comments.length + ' из ';
-      hiddenButtonMoreComment();
+      hideButtonMoreComment();
     } else {
       commentsCount.previousSibling.textContent = SHOW_FIRST_COMMENTS + ' из ';
     }
     commentsCount.textContent = data[index].comments.length;
   };
 
-  var setCommentsCoun = function () {
+  var setCommentsCount = function () {
     var commentsShow = document.querySelectorAll('.social__comments > :not(.visually-hidden)');
     commentsCount.previousSibling.textContent = commentsShow.length + ' из ';
   };
@@ -55,8 +55,8 @@
   window.commentsMore = {
     hidden: hideComments,
     show: showNextComments,
-    upgradeCommentsCounIfFewPhotos: upgradeCommentsCounIfFewPhotos,
-    showButtonMoreComment: showButtonMoreComment,
-    setCommentsCoun: setCommentsCoun,
+    upgradeCountIfFewPhotos: upgradeCountIfFewPhotos,
+    showButtonMore: showButtonMore,
+    setCommentsCount: setCommentsCount,
   };
 })();

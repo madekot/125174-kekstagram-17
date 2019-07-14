@@ -28,7 +28,7 @@
 
   var addEventListenerPicture = function (picture, index, pictures) {
     picture.addEventListener('click', function () {
-      window.fullScreenPhoto.addInformationPhoto(pictures, index);
+      window.fullScreenPhoto.addInformation(pictures, index);
       window.fullScreenPhoto.open();
     });
   };

@@ -2,21 +2,21 @@
 (function () {
   var RANDOM_CARD_COUNT = 10;
 
-  var menu = document.querySelector('.img-filters');
+  var menuElement = document.querySelector('.img-filters');
   var showFiltersMenu = function () {
-    menu.classList.remove('img-filters--inactive');
+    menuElement.classList.remove('img-filters--inactive');
   };
 
   var removePhotoCards = function () {
-    var photoCards = document.querySelectorAll('.picture');
-    for (var i = 0; i < photoCards.length; i++) {
-      var photoCard = photoCards[i];
-      photoCard.parentElement.removeChild(photoCard);
+    var photoCardsElements = document.querySelectorAll('.picture');
+    for (var i = 0; i < photoCardsElements.length; i++) {
+      var photoCardElement = photoCardsElements[i];
+      photoCardElement.parentElement.removeChild(photoCardElement);
     }
   };
 
-  var popularFilter = menu.querySelector('#filter-popular');
-  popularFilter.addEventListener('click', function () {
+  var popularFilterElement = menuElement.querySelector('#filter-popular');
+  popularFilterElement.addEventListener('click', function () {
     window.throttle(function () {
       removePhotoCards();
       window.picture.render(window.backend.data());
@@ -28,8 +28,8 @@
     return window.utility.random.shuffleArray(cloneDataCards).slice(0, RANDOM_CARD_COUNT);
   };
 
-  var newFilter = menu.querySelector('#filter-new');
-  newFilter.addEventListener('click', function () {
+  var newFilterElement = menuElement.querySelector('#filter-new');
+  newFilterElement.addEventListener('click', function () {
     window.throttle(function () {
       removePhotoCards();
       window.picture.render(getRandomCards());
@@ -44,8 +44,8 @@
     return cloneDataCards;
   };
 
-  var discussedFilter = menu.querySelector('#filter-discussed');
-  discussedFilter.addEventListener('click', function () {
+  var discussedFilterElement = menuElement.querySelector('#filter-discussed');
+  discussedFilterElement.addEventListener('click', function () {
     window.throttle(function () {
       removePhotoCards();
       window.picture.render(getDebateCards());

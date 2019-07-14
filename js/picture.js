@@ -34,10 +34,10 @@
   };
 
   var addEventListenerPictures = function (pictures) {
-    var ElementsPictures = document.querySelectorAll('.picture');
-    for (var i = 0; i < ElementsPictures.length; i++) {
+    var picturesElements = document.querySelectorAll('.picture');
+    for (var i = 0; i < picturesElements.length; i++) {
       var indexElement = i;
-      var pictureElement = ElementsPictures[i];
+      var pictureElement = picturesElements[i];
       addEventListenerPicture(pictureElement, indexElement, pictures);
     }
   };

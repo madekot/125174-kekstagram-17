@@ -1,7 +1,7 @@
 'use strict';
 (function () {
 
-  var submitButton = document.querySelector('.img-upload__submit');
+  var submitButtonElement = document.querySelector('.img-upload__submit');
 
   var checkOnFocus = function (evt, element) {
     return evt.target !== element;
@@ -17,7 +17,7 @@
     descriptionElement.value = '';
   };
 
-  submitButton.addEventListener('click', function () {
+  submitButtonElement.addEventListener('click', function () {
     window.validation.check();
   });
 

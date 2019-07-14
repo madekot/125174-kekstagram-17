@@ -1,6 +1,6 @@
 'use strict';
 (function () {
-  var main = document.querySelector('main');
+  var mainElement = document.querySelector('main');
 
   var showMessage = function (message, buttonClose, secondButtonClose) {
     window.preview.close();
@@ -35,23 +35,23 @@
     document.addEventListener('click', onClick);
     document.addEventListener('keydown', onKeyPressESC);
 
-    main.appendChild(message);
+    mainElement.appendChild(message);
   };
 
   var showSuccessMessage = function () {
-    var templateSuccessMessage = document.querySelector('#success').content.querySelector('.success');
-    var message = templateSuccessMessage.cloneNode(true);
-    var buttonClose = message.querySelector('.success__button');
-    showMessage(message, buttonClose);
+    var templateSuccessMessageElement = document.querySelector('#success').content.querySelector('.success');
+    var messageElement = templateSuccessMessageElement.cloneNode(true);
+    var buttonCloseElement = messageElement.querySelector('.success__button');
+    showMessage(messageElement, buttonCloseElement);
   };
 
   var showErrorMessage = function () {
-    var templateErrorMessage = document.querySelector('#error').content.querySelector('.error');
-    var message = templateErrorMessage.cloneNode(true);
-    var buttonsClose = message.querySelectorAll('.error__button');
+    var templateErrorMessageElement = document.querySelector('#error').content.querySelector('.error');
+    var messageElement = templateErrorMessageElement.cloneNode(true);
+    var buttonsClose = messageElement.querySelectorAll('.error__button');
     var firstButtonClose = buttonsClose[0];
     var secondButtonClose = buttonsClose[1];
-    showMessage(message, firstButtonClose, secondButtonClose);
+    showMessage(messageElement, firstButtonClose, secondButtonClose);
   };
 
   window.popupMessage = {

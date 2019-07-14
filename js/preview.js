@@ -16,6 +16,7 @@
   };
 
   var openImageEditingForm = function () {
+    window.validation.clearFieldHashtag();
     window.form.clearDescription();
     window.slider.resetAffect();
     window.resizePhotoPreview.reset();

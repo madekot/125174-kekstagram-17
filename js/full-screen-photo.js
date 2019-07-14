@@ -17,13 +17,13 @@
   };
 
   var addComments = function (comments) {
-    var fragment = document.createDocumentFragment();
+    var fragmentElement = document.createDocumentFragment();
     comments.forEach(function (comment) {
       var message = comment.message;
       var commentElement = addComment(message);
-      fragment.appendChild(commentElement);
+      fragmentElement.appendChild(commentElement);
     });
-    listCommentsElement.appendChild(fragment);
+    listCommentsElement.appendChild(fragmentElement);
   };
 
   var setDescription = function (descriptionText) {
@@ -41,8 +41,8 @@
     window.commentsMore.hidden();
   };
 
-  var buttonMoreComment = document.querySelector('.social__comments-loader');
-  buttonMoreComment.addEventListener('click', function () {
+  var buttonMoreCommentElement = document.querySelector('.social__comments-loader');
+  buttonMoreCommentElement.addEventListener('click', function () {
     window.commentsMore.show();
     window.commentsMore.setCommentsCount();
   });
@@ -63,12 +63,12 @@
   };
 
   var addInformation = function (data, index) {
-    var image = bigPictureElement.querySelector('.big-picture__img img');
-    var likes = bigPictureElement.querySelector('.likes-count');
+    var imageElement = bigPictureElement.querySelector('.big-picture__img img');
+    var likesElement = bigPictureElement.querySelector('.likes-count');
     clearComments();
     window.commentsMore.showButtonMore();
-    image.src = data[index].url;
-    likes.textContent = data[index].likes;
+    imageElement.src = data[index].url;
+    likesElement.textContent = data[index].likes;
     window.commentsMore.upgradeCountIfFewPhotos(data, index);
     addComments(data[index].comments);
     setDescription(data[index].description);

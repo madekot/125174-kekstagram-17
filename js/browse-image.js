@@ -12,7 +12,12 @@
     });
   };
 
+  var deleteDefaultImage = function () {
+    previewElement.src = '';
+  };
+
   fileChooserElement.addEventListener('change', function () {
+    deleteDefaultImage();
     var file = fileChooserElement.files[0];
     var fileName = file.name.toLowerCase();
 

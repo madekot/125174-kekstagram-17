@@ -1,6 +1,5 @@
 'use strict';
 (function () {
-  var KEY_CODE_ENTER = 13;
   var KEY_CODE_ESC = 27;
   var getRandomNumber = function (min, max) {
     var result = min - 0.5 + Math.random() * (max - min + 1);
@@ -12,12 +11,12 @@
     return Boolean(getRandomNumber(0, 1));
   };
 
-  var getRandomArrayElement = function (arr) {
-    return arr[getRandomNumber(0, arr.length - 1)];
+  var getRandomArrayElement = function (multitude) {
+    return multitude[getRandomNumber(0, multitude.length - 1)];
   };
 
-  var shuffleArray = function (arr) {
-    return arr.sort(function () {
+  var shuffleArray = function (multitude) {
+    return multitude.sort(function () {
       return window.utility.random.boolean()
         ? -1
         : 1;
@@ -32,9 +31,6 @@
       shuffleArray: shuffleArray,
     },
     keyboard: {
-      isEnterPressed: function (evt) {
-        return evt.keyCode === KEY_CODE_ENTER;
-      },
       isEscPressed: function (evt) {
         return evt.keyCode === KEY_CODE_ESC;
       },

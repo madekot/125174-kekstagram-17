@@ -17,21 +17,21 @@
   };
 
   var increaseFieldValue = function () {
-    var sizeFieldElementvalue = parseInt(sizeFieldElement.value, NUMBER_SYSTEM);
-    if (sizeFieldElementvalue < MAX_SIZE) {
-      sizeFieldElementvalue += RESIZING_STEP;
-      sizeFieldElement.value = sizeFieldElementvalue + '%';
+    var sizeFieldElementValue = parseInt(sizeFieldElement.value, NUMBER_SYSTEM);
+    if (sizeFieldElementValue < MAX_SIZE) {
+      sizeFieldElementValue += RESIZING_STEP;
+      sizeFieldElement.value = sizeFieldElementValue + '%';
     }
-    return sizeFieldElementvalue;
+    return sizeFieldElementValue;
   };
 
   var decreaseFieldValue = function () {
-    var sizeFieldElementvalue = parseInt(sizeFieldElement.value, NUMBER_SYSTEM);
-    if (sizeFieldElementvalue > MIN_SIZE) {
-      sizeFieldElementvalue -= RESIZING_STEP;
-      sizeFieldElement.value = sizeFieldElementvalue + '%';
+    var sizeFieldElementValue = parseInt(sizeFieldElement.value, NUMBER_SYSTEM);
+    if (sizeFieldElementValue > MIN_SIZE) {
+      sizeFieldElementValue -= RESIZING_STEP;
+      sizeFieldElement.value = sizeFieldElementValue + '%';
     }
-    return sizeFieldElementvalue;
+    return sizeFieldElementValue;
   };
 
   var onImageIncreaseButtonClick = function () {

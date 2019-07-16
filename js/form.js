@@ -1,7 +1,7 @@
 'use strict';
 (function () {
 
-  var submitBatton = document.querySelector('.img-upload__submit');
+  var submitButtonElement = document.querySelector('.img-upload__submit');
 
   var checkOnFocus = function (evt, element) {
     return evt.target !== element;
@@ -12,11 +12,17 @@
     evt.preventDefault();
   });
 
-  submitBatton.addEventListener('click', function () {
+  var clearDescription = function () {
+    var descriptionElement = document.querySelector('.text__description');
+    descriptionElement.value = '';
+  };
+
+  submitButtonElement.addEventListener('click', function () {
     window.validation.check();
   });
 
   window.form = {
     checkOnFocus: checkOnFocus,
+    clearDescription: clearDescription,
   };
 })();

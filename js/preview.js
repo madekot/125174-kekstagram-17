@@ -16,9 +16,12 @@
   };
 
   var openImageEditingForm = function () {
+    window.validation.clearFieldHashtag();
+    window.form.clearDescription();
+    window.slider.resetAffect();
     window.resizePhotoPreview.reset();
     imgUploadOverlayElement.classList.remove('hidden');
-    closeButtonImageEditingFormElement.addEventListener('click', onСloseButtonImageEditingFormClick);
+    closeButtonImageEditingFormElement.addEventListener('click', onCloseButtonImageEditingFormClick);
     document.addEventListener('keydown', onImageEditingFormEsckey);
     window.resizePhotoPreview.addHandlersButton();
     window.slider.resetPosition();
@@ -33,12 +36,12 @@
   var closeImageEditingForm = function () {
     uploadFileFieldElement.value = '';
     imgUploadOverlayElement.classList.add('hidden');
-    closeButtonImageEditingFormElement.removeEventListener('click', onСloseButtonImageEditingFormClick);
+    closeButtonImageEditingFormElement.removeEventListener('click', onCloseButtonImageEditingFormClick);
     document.removeEventListener('keydown', onImageEditingFormEsckey);
     window.resizePhotoPreview.removeHandlersButton();
   };
 
-  var onСloseButtonImageEditingFormClick = function () {
+  var onCloseButtonImageEditingFormClick = function () {
     closeImageEditingForm();
   };
 

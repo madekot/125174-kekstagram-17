@@ -73,7 +73,7 @@
     });
   };
 
-  var messageErrorJoin = function (messageObj) {
+  var collectErrorMessages = function (messageObj) {
     var message = '';
     for (var hastag in messageObj) {
       if ({}.hasOwnProperty.call(messageObj, hastag)) {
@@ -88,7 +88,7 @@
     var hashtags = getHashtagsArr(hashtagsElement.value);
     getMessageHashtagsError(messageObj, hashtags);
     getMessageHashtagError(messageObj, hashtags);
-    return messageErrorJoin(messageObj);
+    return collectErrorMessages(messageObj);
   };
 
   var clearCustomValidity = function () {
@@ -109,7 +109,6 @@
       hashtagsElement.style.borderColor = 'red';
     } else {
       hashtagsElement.style.borderColor = '';
-      clearFieldHashtag();
     }
   };
 
@@ -121,8 +120,8 @@
     setHashtagField();
   };
 
-
   window.validation = {
     check: checkIsValid,
+    clearFieldHashtag: clearFieldHashtag,
   };
 })();
